@@ -30,7 +30,7 @@ class Ui_Spammer(object):
     def main_prog(self):
         try:
             if filePathDisplay:
-                print("WARNING: \n IF YOU WANT TO EXIT EARLY, CLOSE THE TERMINAL WINDOW AND NOT THE GUI")
+                print("Press alt + f5 at any time to exit early. Closing the GUI will not stop the program.")
                 file = open(filePath[1], "r")
                 ac = str(file.read())
                 split_up_script = []
@@ -293,11 +293,20 @@ class Ui_Spammer(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtCore.QCoreApplication.translate("Spammer", u"Semi-randomized", None))
         
-if __name__ == "__main__":
-    import sys
+ def killswitch():
+    keyboard.wait("alt + f5")
+    exit()
+    
+def main():
     app = QtWidgets.QApplication(sys.argv)
     Spammer = QtWidgets.QMainWindow()
     ui = Ui_Spammer()
     ui.setupUi(Spammer)
     Spammer.show()
     sys.exit(app.exec_())
+    
+if __name__ == "__main__":
+    switch = threading.Thread(target=killswitch)
+    main = threading.Thread(target=main)
+    switch.start()
+    main.start()
