@@ -57,7 +57,7 @@ class Ui_Spammer(object):
     def main_prog(self):
         try:
             if filePathDisplay:
-                print("WARNING: \n IF YOU WANT TO EXIT EARLY, CLOSE THE TERMINAL WINDOW AND NOT THE GUI")
+                print("If you Would Like to Close the Spammer Early, Do Not Close the Window\nPress SHIFT + ESC to close it"
                 file = open(filePath[1], "r")
                 ac = str(file.read())
                 split_up_script = []
