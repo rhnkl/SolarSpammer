@@ -80,6 +80,7 @@ This option will enable time randomization. What it does is every time a message
 
 ### FAQ
 Q: What if I want to close the spammer before it is finished typing out the text?
+
 A: Use our killswitch keybind of shift + esc. Closing the window will not stop the spam.
 
 ## Contributing Info
