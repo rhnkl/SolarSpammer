@@ -71,55 +71,62 @@ class Ui_Spammer(object):
     
     def setupUi(self, Spammer):
         Spammer.setObjectName("Spammer")
-        Spammer.resize(480, 184)
-        Spammer.setMinimumSize(QtCore.QSize(480, 184)) # +24!
-        Spammer.setMaximumSize(QtCore.QSize(480, 184))
+        Spammer.resize(480, 200)
+        Spammer.setMinimumSize(QtCore.QSize(480, 200))
+        Spammer.setMaximumSize(QtCore.QSize(480, 200)) # 184!
         Spammer.setMouseTracking(False)
         
         self.centralwidget = QtWidgets.QWidget(Spammer)
         self.centralwidget.setObjectName("centralwidget")
+        
+        # Tabs
+        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
+        self.tabWidget.setObjectName(u"tabWidget")
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 491, 201))
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName(u"Script Spammer")
 
         # Progress bar
-        self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
+        self.progressBar = QtWidgets.QProgressBar(self.tab)
         self.progressBar.setGeometry(QtCore.QRect(10, 39+24, 461, 23))
         self.progressBar.setProperty("value", 0)
         self.progressBar.setProperty("textVisible", False)
         self.progressBar.setObjectName("progressBar")
 
         # Minutes remaining display
-        self.minutesRemainingDisplay = QtWidgets.QLCDNumber(self.centralwidget)
+        self.minutesRemainingDisplay = QtWidgets.QLCDNumber(self.tab)
         self.minutesRemainingDisplay.setGeometry(QtCore.QRect(10, 9, 64, 23))
         self.minutesRemainingDisplay.setObjectName("minutesRemainingDisplay")
 
         # Label
-        self.minutesRemainingLabel = QtWidgets.QLabel(self.centralwidget)
+        self.minutesRemainingLabel = QtWidgets.QLabel(self.tab)
         self.minutesRemainingLabel.setGeometry(QtCore.QRect(80, 10, 160, 20))
         self.minutesRemainingLabel.setObjectName("minutesRemainingLabel")
 
         # Percent remaining display
-        self.percentRemaining = QtWidgets.QLCDNumber(self.centralwidget)
+        self.percentRemaining = QtWidgets.QLCDNumber(self.tab)
         self.percentRemaining.setGeometry(QtCore.QRect(10, 34, 64, 23))
         self.percentRemaining.setObjectName("percentRemaining")
 
         # Label
-        self.percentRemainingLabel = QtWidgets.QLabel(self.centralwidget)
+        self.percentRemainingLabel = QtWidgets.QLabel(self.tab)
         self.percentRemainingLabel.setGeometry(QtCore.QRect(80, 35, 160, 20))
         self.percentRemainingLabel.setObjectName("percentRemainingLabel")
 
         # Time between messages county thing
-        self.timeBetweenMessages = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.timeBetweenMessages = QtWidgets.QDoubleSpinBox(self.tab)
         self.timeBetweenMessages.setGeometry(QtCore.QRect(410, 10, 62, 22))
         self.timeBetweenMessages.setObjectName("timeBetweenMessages")
         self.timeBetweenMessages.setProperty("singleStep", 0.1)
         self.timeBetweenMessages.setProperty("value", 0.4)
 
         # Label
-        self.timeBetweenMessagesLabel = QtWidgets.QLabel(self.centralwidget)
+        self.timeBetweenMessagesLabel = QtWidgets.QLabel(self.tab)
         self.timeBetweenMessagesLabel.setGeometry(QtCore.QRect(290, 10, 131, 20))
         self.timeBetweenMessagesLabel.setObjectName("timeBetweenMessagesLabel")
 
         # Chunky boi count
-        self.chunkCount = QtWidgets.QSpinBox(self.centralwidget)
+        self.chunkCount = QtWidgets.QSpinBox(self.tab)
         self.chunkCount.setGeometry(QtCore.QRect(410, 35, 62, 22))
         self.chunkCount.setObjectName("chunkCount")
         self.chunkCount.setProperty("sigleStep", 1)
@@ -128,27 +135,33 @@ class Ui_Spammer(object):
         self.chunkCount.setProperty("maximum", 15)
 
         # Label
-        self.chunkCountLabel = QtWidgets.QLabel(self.centralwidget)
+        self.chunkCountLabel = QtWidgets.QLabel(self.tab)
         self.chunkCountLabel.setGeometry(QtCore.QRect(316, 35, 131, 20))
         self.timeBetweenMessagesLabel.setObjectName("chunkCountLabel")
 
         # Start button
-        self.startButton = QtWidgets.QPushButton(self.centralwidget)
+        self.startButton = QtWidgets.QPushButton(self.tab)
         self.startButton.setGeometry(QtCore.QRect(10, 69+24, 461, 41))
         self.startButton.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.startButton.setObjectName("startButton")
         self.startButton.clicked.connect(self.start_thread)
 
         # File Button
-        self.fileButton = QtWidgets.QPushButton(self.centralwidget)
+        self.fileButton = QtWidgets.QPushButton(self.tab)
         self.fileButton.setGeometry(QtCore.QRect(10, 110+24, 461, 41))
         self.fileButton.setObjectName("fileButton")
         self.fileButton.clicked.connect(self.getFile)
+
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QtWidgets.QWidget()
+        self.tab_2.setObjectName(u"Unique spammer")
+        self.tabWidget.addTab(self.tab_2, "")
 
         Spammer.setCentralWidget(self.centralwidget)
 
 
         self.retranslateUi(Spammer)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Spammer)
 
     def retranslateUi(self, Spammer):
@@ -162,6 +175,8 @@ class Ui_Spammer(object):
         self.fileButton.setText(_translate("Spammer", "Select script file"))
         self.chunkCountLabel.setText(_translate("Spammer", "Message block size"))
         self.percentRemainingLabel.setText(_translate("Spammer", "Percent remaining (approximate)"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtCore.QCoreApplication.translate("Spammer", u"Semi-randomized", None))
         
 if __name__ == "__main__":
     import sys
