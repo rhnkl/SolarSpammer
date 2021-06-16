@@ -1,6 +1,5 @@
 import sys, os
 from PyQt5 import QtCore, QtGui, QtWidgets
-import keyboard
 from time import sleep
 import threading
 import random
@@ -13,6 +12,34 @@ print(' \/\_____\  \ \_____\  \ \_____\  \ \_\ \_\  \ \_\ \_\     \/\_____\  \ \
 print('  \/_____/   \/_____/   \/_____/   \/_/\/_/   \/_/ /_/      \/_____/   \/_/     \/_/\/_/   \/_/  \/_/   \/_/  \/_/   \/_____/   \/_/ /_/ ')
 print(' ')
 
+def exitShortcut():
+    from pynput import keyboard
+    COMBINATIONS = [
+        {keyboard.Key.shift, keyboard.Key.esc},
+        {keyboard.Key.shift, keyboard.Key.esc}
+    ]
+
+    current = set()
+
+    def execute():
+        print("NO")
+
+    def on_press(key):
+        if any([key in COMBO for COMBO in COMBINATIONS]):
+            current.add(key)
+            if any(all(k in current for k in COMBO) for COMBO in COMBINATIONS):
+                execute()
+
+    def on_release(key):
+        if any([key in COMBO for COMBO in COMBINATIONS]):
+            current.remove(key)
+
+    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
+
+threading.Thread(target=exitShortcut).start()
+
+import keyboard
 class Ui_Spammer(object):
 
     def getFile(self):
@@ -292,6 +319,7 @@ class Ui_Spammer(object):
         
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtCore.QCoreApplication.translate("Spammer", u"Semi-randomized", None))
+        
         
 if __name__ == "__main__":
     import sys
