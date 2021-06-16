@@ -22,7 +22,7 @@ def exitShortcut():
     current = set()
 
     def execute():
-        print("NO")
+        os._exit(1)
 
     def on_press(key):
         if any([key in COMBO for COMBO in COMBINATIONS]):
@@ -322,7 +322,6 @@ class Ui_Spammer(object):
         
         
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     Spammer = QtWidgets.QMainWindow()
     ui = Ui_Spammer()
