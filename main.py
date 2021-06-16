@@ -4,6 +4,8 @@ from time import sleep
 import threading
 import random
 import string
+from pynput import keyboard
+
 print(" ______     ______     __         ______     ______        ______     ______   ______     __    __     __    __     ______     ______    ")
 print('/\  ___\   /\  __ \   /\ \       /\  __ \   /\  == \      /\  ___\   /\  == \ /\  __ \   /\ "-./  \   /\ "-./  \   /\  ___\   /\  == \   ')
 print('\ \___  \  \ \ \/\ \  \ \ \____  \ \  __ \  \ \  __<      \ \___  \  \ \  _-/ \ \  __ \  \ \ \-./\ \  \ \ \-./\ \  \ \  __\   \ \  __<   ')
@@ -11,7 +13,6 @@ print(' \/\_____\  \ \_____\  \ \_____\  \ \_\ \_\  \ \_\ \_\     \/\_____\  \ \
 print('  \/_____/   \/_____/   \/_____/   \/_/\/_/   \/_/ /_/      \/_____/   \/_/     \/_/\/_/   \/_/  \/_/   \/_/  \/_/   \/_____/   \/_/ /_/ ')
 print(' ')
 def exitShortcut():
-    from pynput import keyboard
     COMBINATIONS = [
         {keyboard.Key.shift, keyboard.Key.esc},
     ]
