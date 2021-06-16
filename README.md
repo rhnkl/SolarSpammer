@@ -45,7 +45,7 @@ The program will also estimate the minutes remaining in the program, percent rem
 Please note that once you press start, you have 5 seconds to focus on the correct window!
 
 ## Semi-randomized
-![](https://i.ibb.co/g680CCq/Screenshot-2021-06-15-210250.jpg)
+![](https://i.ibb.co/mG3d9hg/Screenshot-2021-06-15-214104.jpg)
 In this tab, instead of reading from a script, the program will take a specified string input, add on some random characters, and send it a specified amount of times. 
 
 In this tab, there are 4 paramaters to change:
@@ -53,6 +53,7 @@ In this tab, there are 4 paramaters to change:
 - Times to spam
 - Time between messages
 - Lenth of suffix
+- Randomize time
 
 ###### Starting string
 This is the prefix of your spam message. for example,
@@ -74,6 +75,9 @@ m!L7KtL$iUjXM&Lt&nvB would be the suffix. The length of this one happens to be 2
 
 ###### Other features of this tab
 Nothing much, pretty much just the "minutes left" thing. It's done with ooooo fancy math equation ooooooo
+
+###### Randomize time
+This option will enable time randomization. What it does is every time a message is sent, it picks a random length to wait unil the next message (between 0.5s and 2s) Simple, and can sometimes prevent autobans from more advanced discord bots, maybe? You can modify it if you want the gap to be bigger, but i'll just keep this for now.
 
 ## Contributing Info
 We are very open to contributions! If you'd like to contribute, feel free to submit a pull request.
