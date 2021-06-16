@@ -1,3 +1,0 @@
-termcolor
-PyQt5
-keyboard
