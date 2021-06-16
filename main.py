@@ -293,20 +293,16 @@ class Ui_Spammer(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtCore.QCoreApplication.translate("Spammer", u"Semi-randomized", None))
         
- def killswitch():
+def killswitch():
     keyboard.wait("alt + f5")
     exit()
-    
-def main():
+   
+if __name__ == "__main__":
+    switch = threading.Thread(target=killswitch)
     app = QtWidgets.QApplication(sys.argv)
     Spammer = QtWidgets.QMainWindow()
     ui = Ui_Spammer()
     ui.setupUi(Spammer)
     Spammer.show()
     sys.exit(app.exec_())
-    
-if __name__ == "__main__":
-    switch = threading.Thread(target=killswitch)
-    main = threading.Thread(target=main)
     switch.start()
-    main.start()
