@@ -1,6 +1,8 @@
 import sys, os
 from PyQt5 import QtCore, QtGui, QtWidgets
+from pynput import keyboard as keyb
 from time import sleep
+import keyboard
 import threading
 import random
 import string
@@ -11,9 +13,8 @@ print(' \/\_____\  \ \_____\  \ \_____\  \ \_\ \_\  \ \_\ \_\     \/\_____\  \ \
 print('  \/_____/   \/_____/   \/_____/   \/_/\/_/   \/_/ /_/      \/_____/   \/_/     \/_/\/_/   \/_/  \/_/   \/_/  \/_/   \/_____/   \/_/ /_/ ')
 print(' ')
 def exitShortcut():
-    from pynput import keyboard
     COMBINATIONS = [
-        {keyboard.Key.shift, keyboard.Key.esc},
+        {keyb.Key.shift, keyb.Key.esc},
     ]
     current = set()
     def execute():
@@ -26,10 +27,9 @@ def exitShortcut():
     def on_release(key):
         if any([key in COMBO for COMBO in COMBINATIONS]):
             current.remove(key)
-    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+    with keyb.Listener(on_press=on_press, on_release=on_release) as listener:
         listener.join()
 threading.Thread(target=exitShortcut).start()
-import keyboard
 class Ui_Spammer(object):
     def getFile(self):
         self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget)
@@ -45,7 +45,7 @@ class Ui_Spammer(object):
     def main_prog(self):
         try:
             if filePathDisplay:
-                print("WARNING: \n IF YOU WANT TO EXIT EARLY, CLOSE THE TERMINAL WINDOW AND NOT THE GUI")
+                self.startButton.setText("Starting in 5 seconds")
                 file = open(filePath[1], "r")
                 ac = str(file.read())
                 split_up_script = []
@@ -53,13 +53,18 @@ class Ui_Spammer(object):
                 splsc = split_up_script
                 wait_time = self.timeBetweenMessages.value()
                 chunkyBoiCount = self.chunkCount.value()
+                randomTime = self.randomizeTimeScripted.checkState()
                 n_elem = len(split_up_script)
                 time_remaining = n_elem * wait_time + n_elem//chunkyBoiCount * wait_time * 1.5
                 old_time = time_remaining
                 sleep(5)
                 i = 0
                 ln = 0
+                self.startButton.setText("Start!")
                 for split_up_script in split_up_script:
+                    if randomTime >= 1:
+                        wait_time = round(random.uniform(0.5, 2), 2)
+                        self.minutesRemainingLabel.setText("Cannot calculate")
                     ln += 1
                     keyboard.write(splsc[i])
                     sleep(0.001)
@@ -68,21 +73,25 @@ class Ui_Spammer(object):
                     time_remaining = n_elem * wait_time - i * wait_time + n_elem//chunkyBoiCount * wait_time*1.5
                     time_remaining_minutes = int(time_remaining)//60
                     time_percent = round(time_remaining/old_time * 100)
+                    if randomTime == 0:
+                        self.minutesRemainingDisplay.setProperty("value", time_remaining_minutes)
+                        self.progressBar.setProperty("value", time_percent)
                     print(f"{i}/{n_elem}")
-                    self.percentRemaining.setProperty("value", time_percent)
-                    self.minutesRemainingDisplay.setProperty("value", time_remaining_minutes)
-                    self.progressBar.setProperty("value", time_percent)
                     if chunkyBoiCount == ln:
                         print("----------")
                         keyboard.press_and_release("enter")
                         ln = 0
                         sleep(wait_time*1.5)
                     sleep(wait_time)
+                    if i == n_elem:
+                        self.minutesRemainingLabel.setText("Minutes remaining (approximate)")
         except:
             self.startButton.setText("Please select a script file!")
             sleep(1.5)
             self.startButton.setText("Start!")
+            
     def main_prog_rand(self):
+        self.startButton.setText("Starting in 5 seconds")
         content = self.startingString.text()
         times = self.spamAmount.value()
         waitTime = self.timeBetween.value()
@@ -90,6 +99,7 @@ class Ui_Spammer(object):
         STR_GEN = string.ascii_uppercase + string.digits + string.punctuation
         d = 0
         sleep(5)
+        self.startButton.setText("Start!")
         for i in range(times):
             keyboard.write(content + "  {" + ''.join(random.choice(STR_GEN) for _ in range(self.suffixLength.value())) + "}")
             sleep(0.001)
@@ -103,6 +113,7 @@ class Ui_Spammer(object):
             print(f"{d}/{times}")
             timeLeft = times * waitTime - d * waitTime
             self.minutesLeft.setProperty("value", round(timeLeft/60))
+            
     def start_thread(self):
         threading.Thread(target=self.main_prog).start()
     
@@ -127,26 +138,28 @@ class Ui_Spammer(object):
         self.tab.setObjectName(u"Script Spammer")
         # Progress bar
         self.progressBar = QtWidgets.QProgressBar(self.tab)
-        self.progressBar.setGeometry(QtCore.QRect(10, 39+24, 461, 23))
+        self.progressBar.setGeometry(QtCore.QRect(10, 39+24, 421, 23))
         self.progressBar.setProperty("value", 0)
-        self.progressBar.setProperty("textVisible", False)
         self.progressBar.setObjectName("progressBar")
+        
+        self.progressBarLabel = QtWidgets.QLabel(self.tab)
+        self.progressBarLabel.setGeometry(423, 39+24, 50, 23)
+        self.progressBarLabel.setObjectName(u"progressBarLabel")
+        
+        # Randomize time
+        self.randomizeTimeScripted = QtWidgets.QCheckBox(self.tab)
+        self.randomizeTimeScripted.setGeometry(10, 10, 101, 21)
+        self.randomizeTimeScripted.setObjectName("randomizeTimeScripted")
+        
         # Minutes remaining display
         self.minutesRemainingDisplay = QtWidgets.QLCDNumber(self.tab)
-        self.minutesRemainingDisplay.setGeometry(QtCore.QRect(10, 9, 64, 23))
+        self.minutesRemainingDisplay.setGeometry(QtCore.QRect(10, 34, 64, 23))
         self.minutesRemainingDisplay.setObjectName("minutesRemainingDisplay")
         # Label
         self.minutesRemainingLabel = QtWidgets.QLabel(self.tab)
-        self.minutesRemainingLabel.setGeometry(QtCore.QRect(80, 10, 160, 20))
+        self.minutesRemainingLabel.setGeometry(QtCore.QRect(80, 35, 160, 20))
         self.minutesRemainingLabel.setObjectName("minutesRemainingLabel")
-        # Percent remaining display
-        self.percentRemaining = QtWidgets.QLCDNumber(self.tab)
-        self.percentRemaining.setGeometry(QtCore.QRect(10, 34, 64, 23))
-        self.percentRemaining.setObjectName("percentRemaining")
-        # Label
-        self.percentRemainingLabel = QtWidgets.QLabel(self.tab)
-        self.percentRemainingLabel.setGeometry(QtCore.QRect(80, 35, 160, 20))
-        self.percentRemainingLabel.setObjectName("percentRemainingLabel")
+
         # Time between messages county thing
         self.timeBetweenMessages = QtWidgets.QDoubleSpinBox(self.tab)
         self.timeBetweenMessages.setGeometry(QtCore.QRect(410, 10, 62, 22))
@@ -250,8 +263,8 @@ class Ui_Spammer(object):
         
         # Thing to slightly modify the time between each message
         self.randomizeTime = QtWidgets.QCheckBox(self.tab_2)
-        self.randomizeTime.setObjectName(u"randomizeTime")
         self.randomizeTime.setGeometry(QtCore.QRect(0, 20, 101, 21))
+        self.randomizeTime.setObjectName(u"randomizeTime")
         
         # Start button
         self.startSemiButton = QtWidgets.QPushButton(self.tab_2)
@@ -275,7 +288,8 @@ class Ui_Spammer(object):
         self.minutesRemainingLabel.setText(_translate("Spammer", "Minutes remaining (approximate)"))
         self.fileButton.setText(_translate("Spammer", "Select script file"))
         self.chunkCountLabel.setText(_translate("Spammer", "Message block size"))
-        self.percentRemainingLabel.setText(_translate("Spammer", "Percent remaining (approximate)"))
+        self.progressBarLabel.setText(_translate("Spammer", "Remaining"))
+        self.randomizeTimeScripted.setText(QtCore.QCoreApplication.translate("Spammer", u"Randomize time", None))
         
         self.startSemiButton.setText(QtCore.QCoreApplication.translate("Spammer", u"Start!", None))
         self.minutesLeftLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Minutes left", None))
