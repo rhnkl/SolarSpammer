@@ -39,7 +39,7 @@ class Ui_Spammer(object):
                 wait_time = self.timeBetweenMessages.value()
                 chunkyBoiCount = self.chunkCount.value()
                 n_elem = len(split_up_script)
-                time_remaining = n_elem * wait_time + n_elem//chunkyBoiCount * wait_time* 1.5
+                time_remaining = n_elem * wait_time + n_elem//chunkyBoiCount * wait_time * 1.5
                 old_time = time_remaining
                 sleep(5)
                 i = 0
