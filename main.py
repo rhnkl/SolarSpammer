@@ -77,7 +77,7 @@ class Ui_Spammer(object):
         d = 0
         sleep(5)
         for i in range(times):
-            keyboard.write(content + " {" + ''.join(random.choice(STR_GEN) for _ in range(self.suffixLength.value())) + "}")
+            keyboard.write(content + "  {" + ''.join(random.choice(STR_GEN) for _ in range(self.suffixLength.value())) + "}")
             sleep(0.001)
             keyboard.press_and_release("enter")
             if randomTime == 0:
