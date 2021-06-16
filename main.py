@@ -1,4 +1,5 @@
 import sys, os
+from termcolor import colored
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pynput import keyboard as keyb
 from time import sleep
@@ -8,12 +9,22 @@ import random
 import string
 from pynput import keyboard
 
-print(" ______     ______     __         ______     ______        ______     ______   ______     __    __     __    __     ______     ______    ")
-print('/\  ___\   /\  __ \   /\ \       /\  __ \   /\  == \      /\  ___\   /\  == \ /\  __ \   /\ "-./  \   /\ "-./  \   /\  ___\   /\  == \   ')
-print('\ \___  \  \ \ \/\ \  \ \ \____  \ \  __ \  \ \  __<      \ \___  \  \ \  _-/ \ \  __ \  \ \ \-./\ \  \ \ \-./\ \  \ \  __\   \ \  __<   ')
-print(' \/\_____\  \ \_____\  \ \_____\  \ \_\ \_\  \ \_\ \_\     \/\_____\  \ \_\    \ \_\ \_\  \ \_\ \ \_\  \ \_\ \ \_\  \ \_____\  \ \_\ \_\ ')
-print('  \/_____/   \/_____/   \/_____/   \/_/\/_/   \/_/ /_/      \/_____/   \/_/     \/_/\/_/   \/_/  \/_/   \/_/  \/_/   \/_____/   \/_/ /_/ ')
-print(' ')
+class colors:
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    RESET = '\033[0m'
+
+
+print('      ;   :   ;')
+print('   .   \_,!,_/   ,')
+print("    `.,'     `.,'")
+print(f"     /         \           "+colored("SOLAR", "red"))
+print(f"~ --|     +     | -- ~          "+colored("SPAMMER", "yellow"))
+print("     \         /")
+print("    ,'`._   _.'`.")
+print("   '   / `!` \   `")
+print("      ;   :   ;")
+
 def exitShortcut():
     COMBINATIONS = [
         {keyb.Key.shift, keyb.Key.esc},
