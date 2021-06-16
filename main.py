@@ -13,6 +13,10 @@ print(' \/\_____\  \ \_____\  \ \_____\  \ \_\ \_\  \ \_\ \_\     \/\_____\  \ \
 print('  \/_____/   \/_____/   \/_____/   \/_/\/_/   \/_/ /_/      \/_____/   \/_/     \/_/\/_/   \/_/  \/_/   \/_/  \/_/   \/_____/   \/_/ /_/ ')
 print(' ')
 
+def killswitch():
+    keyboard.wait("alt + f5")
+    exit()
+    
 class Ui_Spammer(object):
 
     def getFile(self):
@@ -92,6 +96,8 @@ class Ui_Spammer(object):
 
     def start_thread(self):
         threading.Thread(target=self.main_prog).start()
+        threading.Thread(target=killswitch).start()
+        
     
     def start_rand_thread(self):
         threading.Thread(target=self.main_prog_rand).start()
@@ -293,17 +299,13 @@ class Ui_Spammer(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtCore.QCoreApplication.translate("Spammer", u"Semi-randomized", None))
         
-def killswitch():
-    keyboard.wait("alt + f5")
+
    
 if __name__ == "__main__":
-    switch = threading.Thread(target=killswitch)
     app = QtWidgets.QApplication(sys.argv)
     Spammer = QtWidgets.QMainWindow()
     ui = Ui_Spammer()
     ui.setupUi(Spammer)
     Spammer.show()
     sys.exit(app.exec_())
-    switch.start()
-    switch.join()
-    exit()
+    
