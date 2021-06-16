@@ -4,44 +4,33 @@ from time import sleep
 import threading
 import random
 import string
-
 print(" ______     ______     __         ______     ______        ______     ______   ______     __    __     __    __     ______     ______    ")
 print('/\  ___\   /\  __ \   /\ \       /\  __ \   /\  == \      /\  ___\   /\  == \ /\  __ \   /\ "-./  \   /\ "-./  \   /\  ___\   /\  == \   ')
 print('\ \___  \  \ \ \/\ \  \ \ \____  \ \  __ \  \ \  __<      \ \___  \  \ \  _-/ \ \  __ \  \ \ \-./\ \  \ \ \-./\ \  \ \  __\   \ \  __<   ')
 print(' \/\_____\  \ \_____\  \ \_____\  \ \_\ \_\  \ \_\ \_\     \/\_____\  \ \_\    \ \_\ \_\  \ \_\ \ \_\  \ \_\ \ \_\  \ \_____\  \ \_\ \_\ ')
 print('  \/_____/   \/_____/   \/_____/   \/_/\/_/   \/_/ /_/      \/_____/   \/_/     \/_/\/_/   \/_/  \/_/   \/_/  \/_/   \/_____/   \/_/ /_/ ')
 print(' ')
-
 def exitShortcut():
     from pynput import keyboard
     COMBINATIONS = [
         {keyboard.Key.shift, keyboard.Key.esc},
-        {keyboard.Key.shift, keyboard.Key.esc}
     ]
-
     current = set()
-
     def execute():
         os._exit(1)
-
     def on_press(key):
         if any([key in COMBO for COMBO in COMBINATIONS]):
             current.add(key)
             if any(all(k in current for k in COMBO) for COMBO in COMBINATIONS):
                 execute()
-
     def on_release(key):
         if any([key in COMBO for COMBO in COMBINATIONS]):
             current.remove(key)
-
     with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
         listener.join()
-
 threading.Thread(target=exitShortcut).start()
-
 import keyboard
 class Ui_Spammer(object):
-
     def getFile(self):
         self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget)
         try:
@@ -53,11 +42,10 @@ class Ui_Spammer(object):
         except:
             return
         self.fileButton.setText(f"Select script file\n{filePathDisplay}")
-
     def main_prog(self):
         try:
             if filePathDisplay:
-                print("If you Would Like to Close the Spammer Early, Do Not Close the Window\nPress SHIFT + ESC to close it"
+                print("WARNING: \n IF YOU WANT TO EXIT EARLY, CLOSE THE TERMINAL WINDOW AND NOT THE GUI")
                 file = open(filePath[1], "r")
                 ac = str(file.read())
                 split_up_script = []
@@ -94,7 +82,6 @@ class Ui_Spammer(object):
             self.startButton.setText("Please select a script file!")
             sleep(1.5)
             self.startButton.setText("Start!")
-
     def main_prog_rand(self):
         content = self.startingString.text()
         times = self.spamAmount.value()
@@ -116,7 +103,6 @@ class Ui_Spammer(object):
             print(f"{d}/{times}")
             timeLeft = times * waitTime - d * waitTime
             self.minutesLeft.setProperty("value", round(timeLeft/60))
-
     def start_thread(self):
         threading.Thread(target=self.main_prog).start()
     
@@ -132,43 +118,35 @@ class Ui_Spammer(object):
         
         self.centralwidget = QtWidgets.QWidget(Spammer)
         self.centralwidget.setObjectName("centralwidget")
-
 # ----------------------------FIRST TAB-------------------------------- #
-
         # Tabs
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
         self.tabWidget.setGeometry(QtCore.QRect(0, 0, 491, 201))
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName(u"Script Spammer")
-
         # Progress bar
         self.progressBar = QtWidgets.QProgressBar(self.tab)
         self.progressBar.setGeometry(QtCore.QRect(10, 39+24, 461, 23))
         self.progressBar.setProperty("value", 0)
         self.progressBar.setProperty("textVisible", False)
         self.progressBar.setObjectName("progressBar")
-
         # Minutes remaining display
         self.minutesRemainingDisplay = QtWidgets.QLCDNumber(self.tab)
         self.minutesRemainingDisplay.setGeometry(QtCore.QRect(10, 9, 64, 23))
         self.minutesRemainingDisplay.setObjectName("minutesRemainingDisplay")
-
         # Label
         self.minutesRemainingLabel = QtWidgets.QLabel(self.tab)
         self.minutesRemainingLabel.setGeometry(QtCore.QRect(80, 10, 160, 20))
         self.minutesRemainingLabel.setObjectName("minutesRemainingLabel")
-
         # Percent remaining display
         self.percentRemaining = QtWidgets.QLCDNumber(self.tab)
         self.percentRemaining.setGeometry(QtCore.QRect(10, 34, 64, 23))
         self.percentRemaining.setObjectName("percentRemaining")
-
         # Label
         self.percentRemainingLabel = QtWidgets.QLabel(self.tab)
         self.percentRemainingLabel.setGeometry(QtCore.QRect(80, 35, 160, 20))
         self.percentRemainingLabel.setObjectName("percentRemainingLabel")
-
         # Time between messages county thing
         self.timeBetweenMessages = QtWidgets.QDoubleSpinBox(self.tab)
         self.timeBetweenMessages.setGeometry(QtCore.QRect(410, 10, 62, 22))
@@ -176,12 +154,10 @@ class Ui_Spammer(object):
         self.timeBetweenMessages.setProperty("singleStep", 0.1)
         self.timeBetweenMessages.setProperty("value", 0.4)
         self.timeBetweenMessages.setProperty("decimals", 1)
-
         # Label
         self.timeBetweenMessagesLabel = QtWidgets.QLabel(self.tab)
         self.timeBetweenMessagesLabel.setGeometry(QtCore.QRect(290, 10, 131, 20))
         self.timeBetweenMessagesLabel.setObjectName("timeBetweenMessagesLabel")
-
         # Chunky boi count
         self.chunkCount = QtWidgets.QSpinBox(self.tab)
         self.chunkCount.setGeometry(QtCore.QRect(410, 35, 62, 22))
@@ -191,27 +167,22 @@ class Ui_Spammer(object):
         self.chunkCount.setProperty("minimum", 3)
         self.chunkCount.setProperty("maximum", 15)
         self.chunkCount.setProperty("decimals", 0)
-
         # Label
         self.chunkCountLabel = QtWidgets.QLabel(self.tab)
         self.chunkCountLabel.setGeometry(QtCore.QRect(316, 35, 131, 20))
         self.timeBetweenMessagesLabel.setObjectName("chunkCountLabel")
-
         # Start button
         self.startButton = QtWidgets.QPushButton(self.tab)
         self.startButton.setGeometry(QtCore.QRect(10, 69+24, 461, 41))
         self.startButton.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.startButton.setObjectName("startButton")
         self.startButton.clicked.connect(self.start_thread)
-
         # File Button
         self.fileButton = QtWidgets.QPushButton(self.tab)
         self.fileButton.setGeometry(QtCore.QRect(10, 110+24, 461, 41))
         self.fileButton.setObjectName("fileButton")
         self.fileButton.clicked.connect(self.getFile)
-
 # -----------------------------SECOND TAB------------------------------------ #
-
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName(u"Unique spammer")
@@ -289,13 +260,10 @@ class Ui_Spammer(object):
         self.startSemiButton.clicked.connect(self.start_rand_thread)
         
 # --------------------------------------------------------------------------- #
-
         Spammer.setCentralWidget(self.centralwidget)
-
         self.retranslateUi(Spammer)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Spammer)
-
     def retranslateUi(self, Spammer):
         _translate = QtCore.QCoreApplication.translate
         Spammer.setWindowTitle(_translate("Spammer", "Solar Spammer"))
