@@ -1,4 +1,4 @@
-# Readme
+# Welcome!
 ```
   ____        _              ____                                            
  / ___|  ___ | | __ _ _ __  / ___| _ __   __ _ _ __ ___  _ __ ___   ___ _ __ 
@@ -8,4 +8,72 @@
                                   |_|                                        
 ```
   
-  Does spam & stuff
+## About
+Solar spammer is a fairly simple application that spams, and pretty well at that. Due to it's keyboard automation nature, this program will work on nearly any chatting appliction!
+Created by Pixeloid, but SbCoiner also helped :)
+
+## Installing
+Just do `pip install keyboard` and `pip install PyQt5` - you might have to do `py -m pip install keyboard` (and the same for PyQt5) on windows, it just works for me that way. I don't know why tho. Now you can open `main.py` and it will work!
+
+## Usage
+Solar spammer is gui-based, so no command line stuff for this one.
+
+When you launch the app, you will see 2 tabs
+
+![](https://i.ibb.co/RCHq7Q5/Screenshot-2021-06-15-205020.jpg)
+
+## From Script
+In this tab, you have 3 different parameters you need to specify:
+- Time between messages
+- Message block size
+- Select script file
+
+
+###### Time between messages
+This paramater is fairly obsolete, so I just reccomend keeping it at default. But essentially it changes the time it waits between lines. You can turn this down if you like, Unless you run everything on a potato, You should be fine.
+
+
+###### Message block size
+This controls how many times the program presses "shift+enter" until it presses enter. This is so that you won't get rate limited when sending messages on something like discord. 5 Is reccomended, however you can fine tune this to your liking.
+
+
+###### Select script file
+This controls the file the computer will read from and type. Select your text file and you are good to press start! I have included script.txt into here just as a template script, it's the bee movie. Use it if you want.
+
+###### Other features of this tab
+The program will also estimate the minutes remaining in the program, percent remaining, and it will also put that percentage on a progress bar.
+Please note that once you press start, you have 5 seconds to focus on the correct window!
+
+## Semi-randomized
+![](https://i.ibb.co/g680CCq/Screenshot-2021-06-15-210250.jpg)
+In this tab, instead of reading from a script, the program will take a specified string input, add on some random characters, and send it a specified amount of times. 
+
+In this tab, there are 4 paramaters to change:
+- Starting string
+- Times to spam
+- Time between messages
+- Lenth of suffix
+
+###### Starting string
+This is the prefix of your spam message. for example,
+> Lol get spammed m!L7KtL$iUjXM&Lt&nvB
+
+in this case, "Lol get spammed" is the starting string.
+
+###### Times to spam
+It's in the name. It just is the amount of times the program will spam the message.
+
+###### Time between messages
+This one is the same as the last time between messages in terms of functionality, but this one has to be set higher (I reccomend either 0.9 or 1 for discord) in order to prevent rate limiting, just because of the fact that this one doesn't "block" the lines together.
+
+###### Lenth of suffix
+This is the length of the randomized characters after the starting string. For example, in the case we used earlier
+> Lol get spammed m!L7KtL$iUjXM&Lt&nvB
+
+m!L7KtL$iUjXM&Lt&nvB would be the suffix. The length of this one happens to be 20.
+
+###### Other features of this tab
+Nothing much, pretty much just the "minutes left" thing. It's done with ooooo fancy math equation ooooooo
+
+## Contributing Info
+We are very open to contributions! If you'd like to contribute, feel free to submit a pull request.
