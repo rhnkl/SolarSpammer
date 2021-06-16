@@ -295,7 +295,6 @@ class Ui_Spammer(object):
         
 def killswitch():
     keyboard.wait("alt + f5")
-    exit()
    
 if __name__ == "__main__":
     switch = threading.Thread(target=killswitch)
@@ -306,3 +305,5 @@ if __name__ == "__main__":
     Spammer.show()
     sys.exit(app.exec_())
     switch.start()
+    switch.join()
+    exit()
