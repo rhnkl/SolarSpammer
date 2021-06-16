@@ -12,7 +12,7 @@ Solar spammer is a fairly simple application that spams, and pretty well at that
 Created by Pixeloid, but SbCoiner also helped :)
 
 ## Installing
-Just do `pip install keyboard` and `pip install PyQt5` - you might have to do `py -m pip install keyboard` (and the same for PyQt5) on windows, it just works for me that way. I don't know why tho. Now you can open `main.py` and it will work!
+Just do `py -m pip install -r requirements.txt` on windows, and `pip install -r requirements.txt` on macOS/Linux
 
 ## Usage
 Solar spammer is gui-based, so no command line stuff for this one.
