@@ -9,7 +9,7 @@
 ```
   
 ## About
-Solar spammer is a fairly simple application that spams, and pretty well at that.
+Solar spammer is a fairly simple application that spams, and pretty well at that. Due to it's keyboard automation nature, this program will work on nearly any chatting appliction!
 Created by Pixeloid, but SbCoiner also helped :)
 
 ## Installing
@@ -74,3 +74,6 @@ m!L7KtL$iUjXM&Lt&nvB would be the suffix. The length of this one happens to be 2
 
 ###### Other features of this tab
 Nothing much, pretty much just the "minutes left" thing. It's done with ooooo fancy math equation ooooooo
+
+## Contributing Info
+We are very open to contributions! If you'd like to contribute, feel free to submit a pull request.
