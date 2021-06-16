@@ -71,6 +71,7 @@ class Ui_Spammer(object):
         content = self.startingString.text()
         times = self.spamAmount.value()
         waitTime = self.timeBetween.value()
+        randomTime = self.randomizeTime.checkState()
         STR_GEN = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-=_+/?'
         d = 0
         sleep(5)
@@ -78,7 +79,11 @@ class Ui_Spammer(object):
             keyboard.write(content + " " + ''.join(random.choice(STR_GEN) for _ in range(self.suffixLength.value())))
             sleep(0.001)
             keyboard.press_and_release("enter")
-            sleep(waitTime)
+            if randomTime == 0:
+                sleep(waitTime)
+            else:
+                sleepyTime = round(random.uniform(0.5, 2), 2)
+                sleep(sleepyTime)
             d += 1
             print(f"{d}/{times}")
             timeLeft = times * waitTime - d * waitTime
@@ -223,6 +228,7 @@ class Ui_Spammer(object):
         self.timeBetween.setGeometry(QtCore.QRect(410, 80, 62, 22))
         self.timeBetween.setProperty("singleStep", 0.1)
         self.timeBetween.setProperty("decimals", 1)
+        self.timeBetween.setProperty("minimum", 0.1)
         self.timeBetween.setProperty("value", 1.0)
         
         # Label for above feature
@@ -242,6 +248,11 @@ class Ui_Spammer(object):
         self.suffixLengthLabel = QtWidgets.QLabel(self.tab_2)
         self.suffixLengthLabel.setObjectName(u"suffixLengthLabel")
         self.suffixLengthLabel.setGeometry(QtCore.QRect(50, 50, 81, 20))
+        
+        # Thing to slightly modify the time between each message
+        self.randomizeTime = QtWidgets.QCheckBox(self.tab_2)
+        self.randomizeTime.setObjectName(u"randomizeTime")
+        self.randomizeTime.setGeometry(QtCore.QRect(0, 20, 101, 21))
         
         # Start button
         self.startSemiButton = QtWidgets.QPushButton(self.tab_2)
@@ -276,6 +287,7 @@ class Ui_Spammer(object):
         self.startingStringLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Starting String", None))
         self.TBMLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Time between messages" ))
         self.suffixLengthLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Length of suffix" ))
+        self.randomizeTime.setText(QtCore.QCoreApplication.translate("Spammer", u"Randomize time", None))
         
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtCore.QCoreApplication.translate("Spammer", u"Semi-randomized", None))
