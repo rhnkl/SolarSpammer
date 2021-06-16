@@ -80,6 +80,7 @@ class Ui_Spammer(object):
             keyboard.press_and_release("enter")
             sleep(waitTime)
             d += 1
+            print(f"{d}/{times}")
             timeLeft = times * waitTime - d * waitTime
             self.minutesLeft.setProperty("value", round(timeLeft/60))
 
