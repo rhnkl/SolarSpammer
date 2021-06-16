@@ -1,5 +1,4 @@
 import sys, os
-from termcolor import colored
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pynput import keyboard as keyb
 from time import sleep
@@ -14,16 +13,8 @@ class colors:
     RED = '\033[91m'
     RESET = '\033[0m'
 
-
-print('      ;   :   ;')
-print('   .   \_,!,_/   ,')
-print("    `.,'     `.,'")
-print(f"     /         \           "+colored("SOLAR", "red"))
-print(f"~ --|     +     | -- ~          "+colored("SPAMMER", "yellow"))
-print("     \         /")
-print("    ,'`._   _.'`.")
-print("   '   / `!` \   `")
-print("      ;   :   ;")
+logo = ["      ;   :   ;", "   .   \_,!,_/   ,", "    `.,'     `.,'", "     /         \           SOLAR", "~ --|     +     | -- ~          SPAMMER", "     \         /", "    ,'`._   _.'`.", "   '   / `!` \   `", "      ;   :   ;"]
+print(f"{logo[0]}\n{logo[1]}\n{logo[2]}\n{logo[3]}\n{logo[4]}\n{logo[5]}\n{logo[6]}\n{logo[7]}\n{logo[8]}\nPress shift+esc to quit")
 
 def exitShortcut():
     COMBINATIONS = [
