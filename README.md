@@ -57,6 +57,7 @@ In this tab, there are 4 paramaters to change:
 ###### Starting string
 This is the prefix of your spam message. for example,
 > Lol get spammed m!L7KtL$iUjXM&Lt&nvB
+
 in this case, "Lol get spammed" is the starting string.
 
 ###### Times to spam
@@ -68,6 +69,7 @@ This one is the same as the last time between messages in terms of functionality
 ###### Lenth of suffix
 This is the length of the randomized characters after the starting string. For example, in the case we used earlier
 > Lol get spammed m!L7KtL$iUjXM&Lt&nvB
+
 m!L7KtL$iUjXM&Lt&nvB would be the suffix. The length of this one happens to be 20.
 
 ###### Other features of this tab
