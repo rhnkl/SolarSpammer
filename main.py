@@ -7,7 +7,6 @@ import keyboard
 import threading
 import random
 import string
-from pynput import keyboard
 
 class colors:
     YELLOW = '\033[93m'
@@ -25,24 +24,13 @@ print("    ,'`._   _.'`.")
 print("   '   / `!` \   `")
 print("      ;   :   ;")
 
+
 def exitShortcut():
-    COMBINATIONS = [
-        {keyb.Key.shift, keyb.Key.esc},
-    ]
-    current = set()
-    def execute():
-        os._exit(1)
-    def on_press(key):
-        if any([key in COMBO for COMBO in COMBINATIONS]):
-            current.add(key)
-            if any(all(k in current for k in COMBO) for COMBO in COMBINATIONS):
-                execute()
-    def on_release(key):
-        if any([key in COMBO for COMBO in COMBINATIONS]):
-            current.remove(key)
-    with keyb.Listener(on_press=on_press, on_release=on_release) as listener:
-        listener.join()
+    keyboard.wait("shift+esc")
+    os._exit(1)
+
 threading.Thread(target=exitShortcut).start()
+
 class Ui_Spammer(object):
     def getFile(self):
         self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget)
