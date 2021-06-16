@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import keyboard
 from time import sleep
 import threading
+import random
 
 print(" ______     ______     __         ______     ______        ______     ______   ______     __    __     __    __     ______     ______    ")
 print('/\  ___\   /\  __ \   /\ \       /\  __ \   /\  == \      /\  ___\   /\  == \ /\  __ \   /\ "-./  \   /\ "-./  \   /\  ___\   /\  == \   ')
@@ -67,16 +68,32 @@ class Ui_Spammer(object):
             self.startButton.setText("Start!")
 
     def main_prog_rand(self):
-        print('')
+        content = self.startingString.text()
+        times = self.spamAmount.value()
+        waitTime = self.timeBetween.value()
+        STR_GEN = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-=_+/?'
+        d = 0
+        sleep(5)
+        for i in range(times):
+            keyboard.write(content + " " + ''.join(random.choice(STR_GEN) for _ in range(self.suffixLength.value())))
+            sleep(0.001)
+            keyboard.press_and_release("enter")
+            sleep(waitTime)
+            d += 1
+            timeLeft = times * waitTime - d * waitTime
+            self.minutesLeft.setProperty("value", round(timeLeft/60))
 
     def start_thread(self):
         threading.Thread(target=self.main_prog).start()
+    
+    def start_rand_thread(self):
+        threading.Thread(target=self.main_prog_rand).start()
     
     def setupUi(self, Spammer):
         Spammer.setObjectName("Spammer")
         Spammer.resize(480, 200)
         Spammer.setMinimumSize(QtCore.QSize(480, 200))
-        Spammer.setMaximumSize(QtCore.QSize(480, 200)) # 184!
+        Spammer.setMaximumSize(QtCore.QSize(480, 200))
         Spammer.setMouseTracking(False)
         
         self.centralwidget = QtWidgets.QWidget(Spammer)
@@ -124,6 +141,7 @@ class Ui_Spammer(object):
         self.timeBetweenMessages.setObjectName("timeBetweenMessages")
         self.timeBetweenMessages.setProperty("singleStep", 0.1)
         self.timeBetweenMessages.setProperty("value", 0.4)
+        self.timeBetweenMessages.setProperty("decimals", 1)
 
         # Label
         self.timeBetweenMessagesLabel = QtWidgets.QLabel(self.tab)
@@ -138,6 +156,7 @@ class Ui_Spammer(object):
         self.chunkCount.setProperty("value", 5)
         self.chunkCount.setProperty("minimum", 3)
         self.chunkCount.setProperty("maximum", 15)
+        self.chunkCount.setProperty("decimals", 0)
 
         # Label
         self.chunkCountLabel = QtWidgets.QLabel(self.tab)
@@ -171,7 +190,7 @@ class Ui_Spammer(object):
         
         # Label for above feature
         self.startingStringLabel = QtWidgets.QLabel(self.tab_2)
-        self.startingStringLabel.setGeometry(QtCore.QRect(180, 20, 71, 16))
+        self.startingStringLabel.setGeometry(QtCore.QRect(175, 20, 71, 16))
         self.startingStringLabel.setObjectName("startingStringLabel")
         
         # How many times to spam
@@ -189,23 +208,49 @@ class Ui_Spammer(object):
         
         # Minutes left display
         self.minutesLeft = QtWidgets.QLCDNumber(self.tab_2)
-        self.minutesLeft.setGeometry(QtCore.QRect(410, 80, 64, 23))
+        self.minutesLeft.setGeometry(QtCore.QRect(0, 80, 64, 23))
         self.minutesLeft.setObjectName("lcdNumber")
         
         # Label for above feature
-        self.minutesLeft = QtWidgets.QLabel(self.tab_2)
-        self.minutesLeft.setGeometry(QtCore.QRect(350, 80, 61, 20))
-        self.minutesLeft.setObjectName("label")
+        self.minutesLeftLabel = QtWidgets.QLabel(self.tab_2)
+        self.minutesLeftLabel.setGeometry(QtCore.QRect(70, 81, 61, 20))
+        self.minutesLeftLabel.setObjectName("label")
+        
+        # Select the time between messages, aka spam rate
+        self.timeBetween = QtWidgets.QDoubleSpinBox(self.tab_2)
+        self.timeBetween.setObjectName(u"timeBetweenMessages")
+        self.timeBetween.setGeometry(QtCore.QRect(410, 80, 62, 22))
+        self.timeBetween.setProperty("singleStep", 0.1)
+        self.timeBetween.setProperty("decimals", 1)
+        self.timeBetween.setProperty("value", 1.0)
+        
+        # Label for above feature
+        self.TBMLabel = QtWidgets.QLabel(self.tab_2)
+        self.TBMLabel.setObjectName(u"TBMLabel")
+        self.TBMLabel.setGeometry(QtCore.QRect(290, 80, 121, 20))
+        
+        # Changes the length of the randomized suffix
+        self.suffixLength = QtWidgets.QSpinBox(self.tab_2)
+        self.suffixLength.setObjectName(u"suffixLength")
+        self.suffixLength.setGeometry(QtCore.QRect(0, 50, 42, 22))
+        self.suffixLength.setMinimum(4)
+        self.suffixLength.setMaximum(100)
+        self.suffixLength.setValue(16)
+        
+        # Label for above feature
+        self.suffixLengthLabel = QtWidgets.QLabel(self.tab_2)
+        self.suffixLengthLabel.setObjectName(u"suffixLengthLabel")
+        self.suffixLengthLabel.setGeometry(QtCore.QRect(50, 50, 81, 20))
         
         # Start button
         self.startSemiButton = QtWidgets.QPushButton(self.tab_2)
         self.startSemiButton.setGeometry(QtCore.QRect(0, 106, 477, 70))
         self.startSemiButton.setObjectName("pushButton")
+        self.startSemiButton.clicked.connect(self.start_rand_thread)
         
 # --------------------------------------------------------------------------- #
 
         Spammer.setCentralWidget(self.centralwidget)
-
 
         self.retranslateUi(Spammer)
         self.tabWidget.setCurrentIndex(0)
@@ -225,9 +270,11 @@ class Ui_Spammer(object):
         self.percentRemainingLabel.setText(_translate("Spammer", "Percent remaining (approximate)"))
         
         self.startSemiButton.setText(QtCore.QCoreApplication.translate("Spammer", u"Start!", None))
-        self.minutesLeft.setText(QtCore.QCoreApplication.translate("Spammer", u"Minutes left", None))
+        self.minutesLeftLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Minutes left", None))
         self.spamTimesLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Times to spam", None))
         self.startingStringLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Starting String", None))
+        self.TBMLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Time between messages" ))
+        self.suffixLengthLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Length of suffix" ))
         
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtCore.QCoreApplication.translate("Spammer", u"Semi-randomized", None))
