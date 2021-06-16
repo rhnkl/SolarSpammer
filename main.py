@@ -4,6 +4,7 @@ import keyboard
 from time import sleep
 import threading
 import random
+import string
 
 print(" ______     ______     __         ______     ______        ______     ______   ______     __    __     __    __     ______     ______    ")
 print('/\  ___\   /\  __ \   /\ \       /\  __ \   /\  == \      /\  ___\   /\  == \ /\  __ \   /\ "-./  \   /\ "-./  \   /\  ___\   /\  == \   ')
@@ -72,11 +73,11 @@ class Ui_Spammer(object):
         times = self.spamAmount.value()
         waitTime = self.timeBetween.value()
         randomTime = self.randomizeTime.checkState()
-        STR_GEN = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-=_+/?'
+        STR_GEN = string.ascii_uppercase + string.digits + string.punctuation
         d = 0
         sleep(5)
         for i in range(times):
-            keyboard.write(content + " " + ''.join(random.choice(STR_GEN) for _ in range(self.suffixLength.value())))
+            keyboard.write(content + "{ " + ''.join(random.choice(STR_GEN) for _ in range(self.suffixLength.value())) + '}')
             sleep(0.001)
             keyboard.press_and_release("enter")
             if randomTime == 0:
