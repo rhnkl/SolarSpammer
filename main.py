@@ -66,6 +66,9 @@ class Ui_Spammer(object):
             sleep(1.5)
             self.startButton.setText("Start!")
 
+    def main_prog_rand(self):
+        print('')
+
     def start_thread(self):
         threading.Thread(target=self.main_prog).start()
     
@@ -78,7 +81,9 @@ class Ui_Spammer(object):
         
         self.centralwidget = QtWidgets.QWidget(Spammer)
         self.centralwidget.setObjectName("centralwidget")
-        
+
+# ----------------------------FIRST TAB-------------------------------- #
+
         # Tabs
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -152,10 +157,52 @@ class Ui_Spammer(object):
         self.fileButton.setObjectName("fileButton")
         self.fileButton.clicked.connect(self.getFile)
 
+# -----------------------------SECOND TAB------------------------------------ #
+
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName(u"Unique spammer")
         self.tabWidget.addTab(self.tab_2, "")
+        
+        # Input for the starter string to build off of
+        self.startingString = QtWidgets.QLineEdit(self.tab_2)
+        self.startingString.setGeometry(QtCore.QRect(250, 20, 221, 20))
+        self.startingString.setObjectName("startingString")
+        
+        # Label for above feature
+        self.startingStringLabel = QtWidgets.QLabel(self.tab_2)
+        self.startingStringLabel.setGeometry(QtCore.QRect(180, 20, 71, 16))
+        self.startingStringLabel.setObjectName("startingStringLabel")
+        
+        # How many times to spam
+        self.spamAmount = QtWidgets.QSpinBox(self.tab_2)
+        self.spamAmount.setGeometry(QtCore.QRect(371, 50, 101, 22))
+        self.spamAmount.setMaximum(7000)
+        self.spamAmount.setSingleStep(10)
+        self.spamAmount.setProperty("value", 100)
+        self.spamAmount.setObjectName("spamAmount")
+        
+        # Label for above feature
+        self.spamTimesLabel = QtWidgets.QLabel(self.tab_2)
+        self.spamTimesLabel.setGeometry(QtCore.QRect(300, 50, 71, 20))
+        self.spamTimesLabel.setObjectName("spamTimesLabel")
+        
+        # Minutes left display
+        self.minutesLeft = QtWidgets.QLCDNumber(self.tab_2)
+        self.minutesLeft.setGeometry(QtCore.QRect(410, 80, 64, 23))
+        self.minutesLeft.setObjectName("lcdNumber")
+        
+        # Label for above feature
+        self.minutesLeft = QtWidgets.QLabel(self.tab_2)
+        self.minutesLeft.setGeometry(QtCore.QRect(350, 80, 61, 20))
+        self.minutesLeft.setObjectName("label")
+        
+        # Start button
+        self.startSemiButton = QtWidgets.QPushButton(self.tab_2)
+        self.startSemiButton.setGeometry(QtCore.QRect(0, 106, 477, 70))
+        self.startSemiButton.setObjectName("pushButton")
+        
+# --------------------------------------------------------------------------- #
 
         Spammer.setCentralWidget(self.centralwidget)
 
@@ -166,7 +213,8 @@ class Ui_Spammer(object):
 
     def retranslateUi(self, Spammer):
         _translate = QtCore.QCoreApplication.translate
-        Spammer.setWindowTitle(_translate("Spammer", "Sequential spammer"))
+        Spammer.setWindowTitle(_translate("Spammer", "Solar Spammer"))
+        
         self.startButton.setToolTip(_translate("Spammer", "Spamming will start after a 5 second delay"))
         self.progressBar.setToolTip(_translate("Spammer", "Shows progress of spammer, kinda inverted but whatever"))
         self.startButton.setText(_translate("Spammer", "Start!"))
@@ -175,6 +223,12 @@ class Ui_Spammer(object):
         self.fileButton.setText(_translate("Spammer", "Select script file"))
         self.chunkCountLabel.setText(_translate("Spammer", "Message block size"))
         self.percentRemainingLabel.setText(_translate("Spammer", "Percent remaining (approximate)"))
+        
+        self.startSemiButton.setText(QtCore.QCoreApplication.translate("Spammer", u"Start!", None))
+        self.minutesLeft.setText(QtCore.QCoreApplication.translate("Spammer", u"Minutes left", None))
+        self.spamTimesLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Times to spam", None))
+        self.startingStringLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Starting String", None))
+        
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtCore.QCoreApplication.translate("Spammer", u"Semi-randomized", None))
         
