@@ -83,5 +83,9 @@ Q: What if I want to close the spammer before it is finished typing out the text
 
 A: Use our killswitch keybind of shift + esc. Closing the window will not stop the spam.
 
+Q: Why does the UI look so ugly?
+
+A: We plan on making it look better in the near future
+
 ## Contributing Info
 We are very open to contributions! If you'd like to contribute, feel free to submit a pull request.
