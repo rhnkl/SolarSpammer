@@ -6,7 +6,6 @@ import keyboard
 import threading
 import random
 import string
-from pynput import keyboard
 
 class colors:
     YELLOW = '\033[93m'
@@ -16,24 +15,13 @@ class colors:
 logo = ["      ;   :   ;", "   .   \_,!,_/   ,", "    `.,'     `.,'", "     /         \           SOLAR", "~ --|     +     | -- ~          SPAMMER", "     \         /", "    ,'`._   _.'`.", "   '   / `!` \   `", "      ;   :   ;"]
 print(f"{logo[0]}\n{logo[1]}\n{logo[2]}\n{logo[3]}\n{logo[4]}\n{logo[5]}\n{logo[6]}\n{logo[7]}\n{logo[8]}\nPress shift+esc to quit")
 
+
 def exitShortcut():
-    COMBINATIONS = [
-        {keyb.Key.shift, keyb.Key.esc},
-    ]
-    current = set()
-    def execute():
-        os._exit(1)
-    def on_press(key):
-        if any([key in COMBO for COMBO in COMBINATIONS]):
-            current.add(key)
-            if any(all(k in current for k in COMBO) for COMBO in COMBINATIONS):
-                execute()
-    def on_release(key):
-        if any([key in COMBO for COMBO in COMBINATIONS]):
-            current.remove(key)
-    with keyb.Listener(on_press=on_press, on_release=on_release) as listener:
-        listener.join()
+    keyboard.wait("shift+esc")
+    os._exit(1)
+
 threading.Thread(target=exitShortcut).start()
+
 class Ui_Spammer(object):
     def getFile(self):
         self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget)
