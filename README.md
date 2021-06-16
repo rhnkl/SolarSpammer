@@ -1,2 +1,11 @@
-# PythonSpammer
-Automatic spamming thingymajig based off of a script file. useful for spamming people with the bee movie script
+# Readme
+```
+  ____        _              ____                                            
+ / ___|  ___ | | __ _ _ __  / ___| _ __   __ _ _ __ ___  _ __ ___   ___ _ __ 
+ \___ \ / _ \| |/ _` | '__| \___ \| '_ \ / _` | '_ ` _ \| '_ ` _ \ / _ \ '__|
+  ___) | (_) | | (_| | |     ___) | |_) | (_| | | | | | | | | | | |  __/ |   
+ |____/ \___/|_|\__,_|_|    |____/| .__/ \__,_|_| |_| |_|_| |_| |_|\___|_|   
+                                  |_|                                        
+```
+  
+  Does spam & stuff
