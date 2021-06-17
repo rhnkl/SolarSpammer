@@ -6,11 +6,16 @@ import keyboard
 import threading
 import random
 import string
+import requests
 
+# Splashtext
 logo = ["      ;   :   ;", "   .   \_,!,_/   ,", "    `.,'     `.,'", "     /         \           SOLAR", "~ --|     +     | -- ~          SPAMMER", "     \         /", "    ,'`._   _.'`.", "   '   / `!` \   `", "      ;   :   ;"]
 print(f"{logo[0]}\n{logo[1]}\n{logo[2]}\n{logo[3]}\n{logo[4]}\n{logo[5]}\n{logo[6]}\n{logo[7]}\n{logo[8]}\nPress shift+esc to quit")
 
+# MOTD
+print(requests.get("https://raw.githubusercontent.com/SbCoiner/SolarSpammerMOTD/main/MOTD").text)
 
+# KillSwitch
 def exitShortcut():
     keyboard.wait("shift+esc")
     os._exit(1)
