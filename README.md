@@ -8,14 +8,12 @@
 ```
   
 ## About
-Solar spammer is a fairly simple application that spams, and pretty well at that. Due to it's keyboard automation nature, this program will work on nearly any chatting appliction!
-Created by Pixeloid, but SbCoiner also helped :)
+Solar Spammer is a fairly simple application that spams, and pretty well at that. Due to it's keyboard automation nature, this program will work on nearly any chatting appliction!
 
 ## Installing
-Just open up `install.py` and you are ready to run `main.py` (Be sure you have the latest version of python installed)
+Just open up `install.py` and you are ready to run `main.py` (Be sure to have the latest version of python installed).
 
 ## Usage
-Solar spammer is gui-based, so no command line stuff for this one.
 
 When you launch the app, you will see 2 tabs
 
@@ -37,7 +35,7 @@ This controls how many times the program presses "shift+enter" until it presses 
 
 
 ###### Select script file
-This controls the file the computer will read from and type. Select your text file and you are good to press start! I have included script.txt into here just as a template script, it's the bee movie. Use it if you want.
+This controls the file the computer will read from and type. Select your text file and you are good to press start! I have included script.txt into here just as a template script, it's the bee movie script. Use it if you want.
 
 ###### Other features of this tab
 The program will also estimate the minutes remaining in the program, percent remaining, and it will also put that percentage on a progress bar.
@@ -69,12 +67,12 @@ This one is the same as the last time between messages in terms of functionality
 
 ###### Lenth of suffix
 This is the length of the randomized characters after the starting string. For example, in the case we used earlier
-> Lol get spammed m!L7KtL$iUjXM&Lt&nvB
+> Lol get spammed {m!L7KtL$iUjXM&Lt&nvB}
 
 m!L7KtL$iUjXM&Lt&nvB would be the suffix. The length of this one happens to be 20.
 
 ###### Other features of this tab
-Nothing much, pretty much just the "minutes left" thing. It's done with ooooo fancy math equation ooooooo
+Nothing much, pretty much just the "minutes left" thing.
 
 ###### Randomize time
 This option will enable time randomization. What it does is every time a message is sent, it picks a random length to wait unil the next message (between 0.5s and 2s) Simple, and can sometimes prevent autobans from more advanced discord bots, maybe? You can modify it if you want the gap to be bigger, but i'll just keep this for now.
