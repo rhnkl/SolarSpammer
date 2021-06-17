@@ -1,6 +1,5 @@
 import sys, os
 from PyQt5 import QtCore, QtGui, QtWidgets
-from pynput import keyboard as keyb
 from time import sleep
 import keyboard
 import threading
