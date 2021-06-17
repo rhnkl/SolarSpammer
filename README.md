@@ -45,6 +45,7 @@ Please note that once you press start, you have 5 seconds to focus on the correc
 
 ## Semi-randomized
 ![](https://i.ibb.co/mG3d9hg/Screenshot-2021-06-15-214104.jpg)
+
 In this tab, instead of reading from a script, the program will take a specified string input, add on some random characters, and send it a specified amount of times. 
 
 In this tab, there are 4 paramaters to change:
