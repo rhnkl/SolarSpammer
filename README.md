@@ -12,7 +12,7 @@ Solar spammer is a fairly simple application that spams, and pretty well at that
 Created by Pixeloid, but SbCoiner also helped :)
 
 ## Installing
-Just open up `install.py` and you are ready to run `main.py`
+Just open up `install.py` and you are ready to run `main.py` (Be sure you have the latest version of python installed)
 
 ## Usage
 Solar spammer is gui-based, so no command line stuff for this one.
