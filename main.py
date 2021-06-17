@@ -12,9 +12,6 @@ import requests
 logo = ["      ;   :   ;", "   .   \_,!,_/   ,", "    `.,'     `.,'", "     /         \           SOLAR", "~ --|     +     | -- ~          SPAMMER", "     \         /", "    ,'`._   _.'`.", "   '   / `!` \   `", "      ;   :   ;"]
 print(f"{logo[0]}\n{logo[1]}\n{logo[2]}\n{logo[3]}\n{logo[4]}\n{logo[5]}\n{logo[6]}\n{logo[7]}\n{logo[8]}\nPress shift+esc to quit")
 
-# MOTD
-print("\n\n" + requests.get("https://raw.githubusercontent.com/SbCoiner/SolarSpammerMOTD/main/MOTD").text)
-
 # KillSwitch
 def exitShortcut():
     keyboard.wait("shift+esc")
@@ -83,7 +80,7 @@ class Ui_Spammer(object):
             self.startButton.setText("Start!")
             
     def main_prog_rand(self):
-        self.startButton.setText("Starting in 5 seconds")
+        self.startSemiButton.setText("Starting in 5 seconds")
         content = self.startingString.text()
         times = self.spamAmount.value()
         waitTime = self.timeBetween.value()
@@ -121,50 +118,66 @@ class Ui_Spammer(object):
         
         self.centralwidget = QtWidgets.QWidget(Spammer)
         self.centralwidget.setObjectName("centralwidget")
+        
 # ----------------------------FIRST TAB-------------------------------- #
-        # Tabs
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 491, 201))
-        self.tab = QtWidgets.QWidget()
-        self.tab.setObjectName(u"Script Spammer")
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 481, 201))
+        
+        self.motdTab = QtWidgets.QWidget()
+        self.motdTab.setObjectName("MOTD Tab")
+        self.tabWidget.addTab(self.motdTab, "")
+
+        
+        self.motd = QtWidgets.QLabel('Center', self.motdTab)
+        self.motd.setAlignment(QtCore.Qt.AlignCenter)
+        self.motd.move(210, 70)
+        self.motd.setStyleSheet("font-size: 10pt")
+        self.motd.setObjectName(u"motd")
+        
+# ----------------------------SECOND TAB-------------------------------- #
+        # Tabs
+        
+        self.fsTab = QtWidgets.QWidget()
+        self.fsTab.setObjectName(u"Script Spammer")
+        self.tabWidget.addTab(self.fsTab, "")
         # Progress bar
-        self.progressBar = QtWidgets.QProgressBar(self.tab)
+        self.progressBar = QtWidgets.QProgressBar(self.fsTab)
         self.progressBar.setGeometry(QtCore.QRect(10, 39+24, 421, 23))
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         
-        self.progressBarLabel = QtWidgets.QLabel(self.tab)
+        self.progressBarLabel = QtWidgets.QLabel(self.fsTab)
         self.progressBarLabel.setGeometry(423, 39+24, 50, 23)
         self.progressBarLabel.setObjectName(u"progressBarLabel")
         
         # Randomize time
-        self.randomizeTimeScripted = QtWidgets.QCheckBox(self.tab)
+        self.randomizeTimeScripted = QtWidgets.QCheckBox(self.fsTab)
         self.randomizeTimeScripted.setGeometry(10, 10, 101, 21)
         self.randomizeTimeScripted.setObjectName("randomizeTimeScripted")
         
         # Minutes remaining display
-        self.minutesRemainingDisplay = QtWidgets.QLCDNumber(self.tab)
+        self.minutesRemainingDisplay = QtWidgets.QLCDNumber(self.fsTab)
         self.minutesRemainingDisplay.setGeometry(QtCore.QRect(10, 34, 64, 23))
         self.minutesRemainingDisplay.setObjectName("minutesRemainingDisplay")
         # Label
-        self.minutesRemainingLabel = QtWidgets.QLabel(self.tab)
+        self.minutesRemainingLabel = QtWidgets.QLabel(self.fsTab)
         self.minutesRemainingLabel.setGeometry(QtCore.QRect(80, 35, 160, 20))
         self.minutesRemainingLabel.setObjectName("minutesRemainingLabel")
 
         # Time between messages county thing
-        self.timeBetweenMessages = QtWidgets.QDoubleSpinBox(self.tab)
+        self.timeBetweenMessages = QtWidgets.QDoubleSpinBox(self.fsTab)
         self.timeBetweenMessages.setGeometry(QtCore.QRect(410, 10, 62, 22))
         self.timeBetweenMessages.setObjectName("timeBetweenMessages")
         self.timeBetweenMessages.setProperty("singleStep", 0.1)
         self.timeBetweenMessages.setProperty("value", 0.4)
         self.timeBetweenMessages.setProperty("decimals", 1)
         # Label
-        self.timeBetweenMessagesLabel = QtWidgets.QLabel(self.tab)
+        self.timeBetweenMessagesLabel = QtWidgets.QLabel(self.fsTab)
         self.timeBetweenMessagesLabel.setGeometry(QtCore.QRect(290, 10, 131, 20))
         self.timeBetweenMessagesLabel.setObjectName("timeBetweenMessagesLabel")
         # Chunky boi count
-        self.chunkCount = QtWidgets.QSpinBox(self.tab)
+        self.chunkCount = QtWidgets.QSpinBox(self.fsTab)
         self.chunkCount.setGeometry(QtCore.QRect(410, 35, 62, 22))
         self.chunkCount.setObjectName("chunkCount")
         self.chunkCount.setProperty("sigleStep", 1)
@@ -173,38 +186,37 @@ class Ui_Spammer(object):
         self.chunkCount.setProperty("maximum", 15)
         self.chunkCount.setProperty("decimals", 0)
         # Label
-        self.chunkCountLabel = QtWidgets.QLabel(self.tab)
+        self.chunkCountLabel = QtWidgets.QLabel(self.fsTab)
         self.chunkCountLabel.setGeometry(QtCore.QRect(316, 35, 131, 20))
         self.timeBetweenMessagesLabel.setObjectName("chunkCountLabel")
         # Start button
-        self.startButton = QtWidgets.QPushButton(self.tab)
+        self.startButton = QtWidgets.QPushButton(self.fsTab)
         self.startButton.setGeometry(QtCore.QRect(10, 69+24, 461, 41))
         self.startButton.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.startButton.setObjectName("startButton")
         self.startButton.clicked.connect(self.start_thread)
         # File Button
-        self.fileButton = QtWidgets.QPushButton(self.tab)
+        self.fileButton = QtWidgets.QPushButton(self.fsTab)
         self.fileButton.setGeometry(QtCore.QRect(10, 110+24, 461, 41))
         self.fileButton.setObjectName("fileButton")
         self.fileButton.clicked.connect(self.getFile)
-# -----------------------------SECOND TAB------------------------------------ #
-        self.tabWidget.addTab(self.tab, "")
-        self.tab_2 = QtWidgets.QWidget()
-        self.tab_2.setObjectName(u"Unique spammer")
-        self.tabWidget.addTab(self.tab_2, "")
+# -----------------------------THIRD TAB------------------------------------ #
+        self.srTab = QtWidgets.QWidget()
+        self.srTab.setObjectName(u"Unique spammer")
+        self.tabWidget.addTab(self.srTab, "")
         
         # Input for the starter string to build off of
-        self.startingString = QtWidgets.QLineEdit(self.tab_2)
+        self.startingString = QtWidgets.QLineEdit(self.srTab)
         self.startingString.setGeometry(QtCore.QRect(250, 20, 221, 20))
         self.startingString.setObjectName("startingString")
         
         # Label for above feature
-        self.startingStringLabel = QtWidgets.QLabel(self.tab_2)
+        self.startingStringLabel = QtWidgets.QLabel(self.srTab)
         self.startingStringLabel.setGeometry(QtCore.QRect(175, 20, 71, 16))
         self.startingStringLabel.setObjectName("startingStringLabel")
         
         # How many times to spam
-        self.spamAmount = QtWidgets.QSpinBox(self.tab_2)
+        self.spamAmount = QtWidgets.QSpinBox(self.srTab)
         self.spamAmount.setGeometry(QtCore.QRect(371, 50, 101, 22))
         self.spamAmount.setMaximum(7000)
         self.spamAmount.setSingleStep(10)
@@ -212,22 +224,22 @@ class Ui_Spammer(object):
         self.spamAmount.setObjectName("spamAmount")
         
         # Label for above feature
-        self.spamTimesLabel = QtWidgets.QLabel(self.tab_2)
+        self.spamTimesLabel = QtWidgets.QLabel(self.srTab)
         self.spamTimesLabel.setGeometry(QtCore.QRect(300, 50, 71, 20))
         self.spamTimesLabel.setObjectName("spamTimesLabel")
         
         # Minutes left display
-        self.minutesLeft = QtWidgets.QLCDNumber(self.tab_2)
+        self.minutesLeft = QtWidgets.QLCDNumber(self.srTab)
         self.minutesLeft.setGeometry(QtCore.QRect(0, 80, 64, 23))
         self.minutesLeft.setObjectName("lcdNumber")
         
         # Label for above feature
-        self.minutesLeftLabel = QtWidgets.QLabel(self.tab_2)
+        self.minutesLeftLabel = QtWidgets.QLabel(self.srTab)
         self.minutesLeftLabel.setGeometry(QtCore.QRect(70, 81, 61, 20))
         self.minutesLeftLabel.setObjectName("label")
         
         # Select the time between messages, aka spam rate
-        self.timeBetween = QtWidgets.QDoubleSpinBox(self.tab_2)
+        self.timeBetween = QtWidgets.QDoubleSpinBox(self.srTab)
         self.timeBetween.setObjectName(u"timeBetweenMessages")
         self.timeBetween.setGeometry(QtCore.QRect(410, 80, 62, 22))
         self.timeBetween.setProperty("singleStep", 0.1)
@@ -236,12 +248,12 @@ class Ui_Spammer(object):
         self.timeBetween.setProperty("value", 1.0)
         
         # Label for above feature
-        self.TBMLabel = QtWidgets.QLabel(self.tab_2)
+        self.TBMLabel = QtWidgets.QLabel(self.srTab)
         self.TBMLabel.setObjectName(u"TBMLabel")
         self.TBMLabel.setGeometry(QtCore.QRect(290, 80, 121, 20))
         
         # Changes the length of the randomized suffix
-        self.suffixLength = QtWidgets.QSpinBox(self.tab_2)
+        self.suffixLength = QtWidgets.QSpinBox(self.srTab)
         self.suffixLength.setObjectName(u"suffixLength")
         self.suffixLength.setGeometry(QtCore.QRect(0, 50, 42, 22))
         self.suffixLength.setMinimum(4)
@@ -249,17 +261,17 @@ class Ui_Spammer(object):
         self.suffixLength.setValue(16)
         
         # Label for above feature
-        self.suffixLengthLabel = QtWidgets.QLabel(self.tab_2)
+        self.suffixLengthLabel = QtWidgets.QLabel(self.srTab)
         self.suffixLengthLabel.setObjectName(u"suffixLengthLabel")
         self.suffixLengthLabel.setGeometry(QtCore.QRect(50, 50, 81, 20))
         
         # Thing to slightly modify the time between each message
-        self.randomizeTime = QtWidgets.QCheckBox(self.tab_2)
+        self.randomizeTime = QtWidgets.QCheckBox(self.srTab)
         self.randomizeTime.setGeometry(QtCore.QRect(0, 20, 101, 21))
         self.randomizeTime.setObjectName(u"randomizeTime")
         
         # Start button
-        self.startSemiButton = QtWidgets.QPushButton(self.tab_2)
+        self.startSemiButton = QtWidgets.QPushButton(self.srTab)
         self.startSemiButton.setGeometry(QtCore.QRect(0, 106, 477, 70))
         self.startSemiButton.setObjectName("pushButton")
         self.startSemiButton.clicked.connect(self.start_rand_thread)
@@ -272,6 +284,8 @@ class Ui_Spammer(object):
     def retranslateUi(self, Spammer):
         _translate = QtCore.QCoreApplication.translate
         Spammer.setWindowTitle(_translate("Spammer", "Solar Spammer"))
+        
+        self.motd.setText(_translate("Spammer", requests.get("https://raw.githubusercontent.com/SbCoiner/SolarSpammerMOTD/main/MOTD").text))
         
         self.startButton.setToolTip(_translate("Spammer", "Spamming will start after a 5 second delay"))
         self.progressBar.setToolTip(_translate("Spammer", "Shows progress of spammer, kinda inverted but whatever"))
@@ -291,8 +305,9 @@ class Ui_Spammer(object):
         self.suffixLengthLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Length of suffix" ))
         self.randomizeTime.setText(QtCore.QCoreApplication.translate("Spammer", u"Randomize time", None))
         
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtCore.QCoreApplication.translate("Spammer", u"Semi-randomized", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.motdTab), QtCore.QCoreApplication.translate("Spammer", u"MOTD", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.fsTab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.srTab), QtCore.QCoreApplication.translate("Spammer", u"Semi-Randomized", None))
         
         
 if __name__ == "__main__":
