@@ -86,6 +86,6 @@ This option will enable time randomization. What it does is every time a message
 * Q: Why does the UI look so ugly?
 
 * A: We plan on making it look better in the near future
-* 
+
 ## Contributing Info
 We are very open to contributions! If you'd like to contribute, feel free to submit a pull request.
