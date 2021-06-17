@@ -131,7 +131,7 @@ class Ui_Spammer(object):
         
         self.motd = QtWidgets.QLabel('Center', self.motdTab)
         self.motd.setAlignment(QtCore.Qt.AlignCenter)
-        self.motd.move(210, 70)
+        self.motd.move(200, 70)
         self.motd.setStyleSheet("font-size: 10pt")
         self.motd.setObjectName(u"motd")
         
