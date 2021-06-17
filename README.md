@@ -78,7 +78,7 @@ Nothing much, pretty much just the "minutes left" thing. It's done with ooooo fa
 ###### Randomize time
 This option will enable time randomization. What it does is every time a message is sent, it picks a random length to wait unil the next message (between 0.5s and 2s) Simple, and can sometimes prevent autobans from more advanced discord bots, maybe? You can modify it if you want the gap to be bigger, but i'll just keep this for now.
 
-### FAQ
+## FAQ
 * Q: What if I want to close the spammer before it is finished typing out the text?
 
 * A: Use our killswitch keybind of shift + esc. Closing the window will not stop the spam.
