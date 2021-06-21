@@ -6,11 +6,17 @@ import threading
 import random
 import string
 import requests
+import mouse
 
 # Splashtext
 logo = ["      ;   :   ;", "   .   \_,!,_/   ,", "    `.,'     `.,'", "     /         \           SOLAR", "~ --|     +     | -- ~          SPAMMER", "     \         /", "    ,'`._   _.'`.", "   '   / `!` \   `", "      ;   :   ;"]
 for i in logo:
     print(i)
+    
+global currentButton
+global stopAc
+currentButton = "left"
+stopAc = 0
 
 # KillSwitch
 def exitShortcut():
@@ -103,11 +109,45 @@ class Ui_Spammer(object):
             timeLeft = times * waitTime - d * waitTime
             self.minutesLeft.setProperty("value", round(timeLeft/60))
             
+    def autoClicker(self):
+        slightlyRandomize = self.randomCps.checkState()
+        sleep(5)
+        while True:
+            mouse.click(button=currentButton)
+            if slightlyRandomize >= 1:
+                sleeptime = int(self.cpsBox.value())/109.85+random.uniform(0, 0.2)
+            else:
+                sleeptime = int(self.cpsBox.value())/109.85
+            print(sleeptime)
+            sleep(sleeptime)
+            global stopAc
+            if stopAc == 1:
+                stopAc = 0
+                exit()
+            
+    def setRMB(self):
+        self.rightClick.setEnabled(False)
+        self.leftClick.setEnabled(True)
+        currentButton = "right"
+        
+    def setLMB(self):
+        self.rightClick.setEnabled(True)
+        self.leftClick.setEnabled(False)
+        currentButton = "left"
+            
     def start_thread(self):
         threading.Thread(target=self.main_prog).start()
     
     def start_rand_thread(self):
         threading.Thread(target=self.main_prog_rand).start()
+        
+    def start_ac(self):
+        threading.Thread(target=self.autoClicker).start()
+    
+    def stop_ac(self):
+        global stopAc
+        stopAc = 1
+        
     
     def setupUi(self, Spammer):
         Spammer.setObjectName("Spammer")
@@ -115,6 +155,10 @@ class Ui_Spammer(object):
         Spammer.setMinimumSize(QtCore.QSize(480, 200))
         Spammer.setMaximumSize(QtCore.QSize(480, 200))
         Spammer.setMouseTracking(False)
+        
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("assets/icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Spammer.setWindowIcon(icon)
         
         self.centralwidget = QtWidgets.QWidget(Spammer)
         self.centralwidget.setObjectName("centralwidget")
@@ -131,7 +175,7 @@ class Ui_Spammer(object):
         
         self.motd = QtWidgets.QLabel('Center', self.motdTab)
         self.motd.setAlignment(QtCore.Qt.AlignCenter)
-        self.motd.move(200, 70)
+        self.motd.move(0, 0)
         self.motd.setStyleSheet("font-size: 10pt")
         self.motd.setObjectName(u"motd")
         
@@ -277,6 +321,47 @@ class Ui_Spammer(object):
         self.startSemiButton.clicked.connect(self.start_rand_thread)
         
 # --------------------------------------------------------------------------- #
+        self.acTab = QtWidgets.QWidget()
+        self.acTab.setObjectName(u"Autoclicker")
+        self.tabWidget.addTab(self.acTab, "")
+
+        self.cpsBox = QtWidgets.QSpinBox(self.acTab)
+        self.cpsBox.setObjectName("cpsBox")
+        self.cpsBox.setGeometry(QtCore.QRect(10, 10, 42, 22))
+        self.cpsBox.setMinimum(1)
+        self.cpsBox.setMaximum(50)
+        self.cpsBox.setValue(10)
+        
+        self.cpsBoxLabel = QtWidgets.QLabel(self.acTab)
+        self.cpsBoxLabel.setObjectName("cpsBoxLabel")
+        self.cpsBoxLabel.setGeometry(QtCore.QRect(60, 10, 47, 21))
+        
+        self.randomCps = QtWidgets.QCheckBox(self.acTab)
+        self.randomCps.setObjectName("randomCps")
+        self.randomCps.setGeometry(QtCore.QRect(10, 40, 70, 17))
+        
+        self.rightClick = QtWidgets.QPushButton(self.acTab)
+        self.rightClick.setObjectName("rightClick")
+        self.rightClick.setGeometry(QtCore.QRect(100, 10, 75, 23))
+        self.rightClick.clicked.connect(self.setRMB)
+        
+        self.leftClick = QtWidgets.QPushButton(self.acTab)
+        self.leftClick.setObjectName("leftClick")
+        self.leftClick.setGeometry(QtCore.QRect(180, 10, 75, 23))
+        self.leftClick.clicked.connect(self.setLMB)
+        
+        self.startAutoClicker = QtWidgets.QPushButton(self.acTab)
+        self.startAutoClicker.setObjectName("startAutoClicker")
+        self.startAutoClicker.setGeometry(QtCore.QRect(100, 40, 75, 23))
+        self.startAutoClicker.clicked.connect(self.start_ac)
+        
+        self.stopAutoClicker = QtWidgets.QPushButton(self.acTab)
+        self.stopAutoClicker.setObjectName("stopAutoClicker")
+        self.stopAutoClicker.setGeometry(QtCore.QRect(180, 40, 75, 23))
+        self.stopAutoClicker.clicked.connect(self.stop_ac)
+        
+# --------------------------------------------------------------------------- #
+
         Spammer.setCentralWidget(self.centralwidget)
         self.retranslateUi(Spammer)
         self.tabWidget.setCurrentIndex(0)
@@ -305,9 +390,18 @@ class Ui_Spammer(object):
         self.suffixLengthLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Length of suffix" ))
         self.randomizeTime.setText(QtCore.QCoreApplication.translate("Spammer", u"Randomize time", None))
         
+        self.cpsBoxLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"CPS", None))
+        self.randomCps.setText(QtCore.QCoreApplication.translate("Spammer", u"Vary CPS", None))
+        self.rightClick.setText(QtCore.QCoreApplication.translate("Spammer", u"RMB", None))
+        self.leftClick.setText(QtCore.QCoreApplication.translate("Spammer", u"LMB", None))
+        self.setLMB()
+        self.startAutoClicker.setText(QtCore.QCoreApplication.translate("Spammer", u"Start", None))
+        self.stopAutoClicker.setText(QtCore.QCoreApplication.translate("Spammer", u"Stop", None))
+        
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.motdTab), QtCore.QCoreApplication.translate("Spammer", u"MOTD", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.fsTab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.srTab), QtCore.QCoreApplication.translate("Spammer", u"Semi-Randomized", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.acTab), QtCore.QCoreApplication.translate("Spammer", u"Autoclicker", None))
         
         
 if __name__ == "__main__":
