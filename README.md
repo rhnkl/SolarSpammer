@@ -10,6 +10,9 @@
 ## About
 Solar Spammer is a fairly simple application that spams, and pretty well at that. Due to it's keyboard automation nature, this program will work on nearly any chatting appliction!
 
+## Trello board
+[https://trello.com/b/tWYpLiSa](https://trello.com/b/tWYpLiSa) you can monitor our progress and put pressure on us :)))
+
 ## Installing
 Just open up `install.py` and you are ready to run `main.py` (Be sure to have the latest version of python installed).
 
