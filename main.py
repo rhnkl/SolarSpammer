@@ -1,100 +1,223 @@
-import sys, os
-from PyQt5 import QtCore, QtGui, QtWidgets
 from time import sleep
 import keyboard
-import threading
 import random
 import string
-import requests
-import mouse
+import threading
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QIcon
+from PyQt5.uic import loadUi
+from PyQt5.QtWidgets import QDialog, QApplication, QGraphicsOpacityEffect, QStackedWidget
+from PyQt5.QtCore import QPropertyAnimation, QSequentialAnimationGroup, QPoint, QEasingCurve
 
-# Splashtext
-logo = ["      ;   :   ;", "   .   \_,!,_/   ,", "    `.,'     `.,'", "     /         \           SOLAR", "~ --|     +     | -- ~          SPAMMER", "     \         /", "    ,'`._   _.'`.", "   '   / `!` \   `", "      ;   :   ;"]
-for i in logo:
-    print(i)
-    
-global currentButton
-global stopAc
-currentButton = "left"
-stopAc = 0
+class welcomeScreen(QDialog):
+    def __init__(self):
+        super(welcomeScreen, self).__init__()
+        loadUi("resources/welcome.ui", self)
+        self.uiScriptBasedSpammer.clicked.connect(self.gotoscript)
+        self.uiUniqueSpammer.clicked.connect(self.gotounique)
+        self.aboutButton.clicked.connect(self.gotoabout)
+        
+        self.animation = QPropertyAnimation(self.welcomeLabel, b"pos")
+        self.animation.setDuration(1400)
+        self.animation.setEndValue(QPoint(50, 30))
+        self.animation.setEasingCurve(QEasingCurve.OutCubic)
+        
+        self.solaranim = QPropertyAnimation(self.solarLabel, b"pos")
+        self.solaranim.setDuration(1400)
+        self.solaranim.setEndValue(QPoint(50, 30))
+        self.solaranim.setEasingCurve(QEasingCurve.OutCubic)
+        
+        self.animgroup = QSequentialAnimationGroup()
+        self.animgroup.addAnimation(self.animation)
+        self.animgroup.addAnimation(self.solaranim)
+        self.animgroup.start()
+        
+    def gotoscript(self):
+        scriptBasedScreen = scripted()
+        widget.addWidget(scriptBasedScreen)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+        widget.setWindowTitle("{solar} - Script spammer")
+        
+    def gotounique(self):
+        unique = uniqueSpammer()
+        widget.addWidget(unique)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+        widget.setWindowTitle("{solar} - Unique spammer")
+        
+    def gotoabout(self):
+        abt = aboutUs()
+        widget.addWidget(abt)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+        widget.setWindowTitle("{solar} - About")
 
-# KillSwitch
-def exitShortcut():
-    keyboard.wait("shift+esc")
-    os._exit(1)
-
-threading.Thread(target=exitShortcut).start()
-
-class Ui_Spammer(object):
+        
+class scripted(QDialog):
+    def __init__(self):
+        super(scripted, self).__init__()
+        loadUi("resources/scriptBased.ui", self)
+        self.backButton.clicked.connect(self.gotowelcome)
+        self.scriptFile.clicked.connect(self.getFile)
+        self.startButton.clicked.connect(self.runThread)
+        
+        self.timeBetweenMessages.setProperty("singleStep", 0.1)
+        self.timeBetweenMessages.setProperty("value", 0.4)
+        self.timeBetweenMessages.setProperty("decimals", 1)
+            
+        self.animation = QPropertyAnimation(self.scriptbasedLabel, b"pos")
+        self.animation.setDuration(2000)
+        self.animation.setEndValue(QPoint(0, 30))
+        self.animation.setEasingCurve(QEasingCurve.OutCubic)
+        self.animation.start()
+        
+    def gotowelcome(self):
+        welcome = welcomeScreen()
+        widget.addWidget(welcome)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+        widget.setWindowTitle("{solar} - Welcome")
+              
     def getFile(self):
-        self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget)
+        self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName()
         try:
-            global filePath
-            filePath = str(self.getFileDialog).split("'")
-            fpd = filePath[1].split("/", 3)
-            global filePathDisplay
-            filePathDisplay = fpd[3]
-        except:
-            return
-        self.fileButton.setText(f"Select script file\n{filePathDisplay}")
-    def main_prog(self):
+            filePathPre = str(self.getFileDialog).split("'")[1]
+            if filePathPre == "":
+                print("No file selected")
+            else:
+                global filePath
+                filePath = filePathPre
+                print(filePath)
+                self.scriptFile.setText("Selected")
+        except: return
+        
+    def runThread(self):
+        threading.Thread(target=self.run).start()
+        
+    def run(self):
         try:
-            if filePathDisplay:
+            if filePath != "":
+                
                 self.startButton.setText("Starting in 5 seconds")
-                file = open(filePath[1], "r")
+                
+                file = open(filePath, "r")
                 ac = str(file.read())
+                
                 split_up_script = []
                 split_up_script = ac.splitlines()
                 splsc = split_up_script
+                
                 wait_time = self.timeBetweenMessages.value()
-                chunkyBoiCount = self.chunkCount.value()
-                randomTime = self.randomizeTimeScripted.checkState()
+                chunkyBoiCount = self.messageBlockSize.value()
+                randomTime = self.randomizeTime.checkState()
+                
                 n_elem = len(split_up_script)
                 time_remaining = n_elem * wait_time + n_elem//chunkyBoiCount * wait_time * 1.5
                 old_time = time_remaining
-                sleep(5)
+                
+                
+                self.startButton.setText("Starting in 5 seconds.....")
+                sleep(1)
+                self.startButton.setText("Starting in 4 seconds....")
+                sleep(1)
+                self.startButton.setText("Starting in 3 seconds...")
+                sleep(1)
+                self.startButton.setText("Starting in 2 seconds..")
+                sleep(1)
+                self.startButton.setText("Starting in 1 second.")
+                sleep(1)
+                
                 i = 0
                 ln = 0
-                self.startButton.setText("Start!")
+                self.startButton.setText("Running!")
+                
                 for split_up_script in split_up_script:
                     if randomTime >= 1:
                         wait_time = round(random.uniform(0.5, 2), 2)
                         self.minutesRemainingLabel.setText("Cannot calculate")
+                        
                     ln += 1
+                    
                     keyboard.write(splsc[i])
                     sleep(0.001)
                     keyboard.press_and_release("shift+enter")
+                    
                     i += 1
+                    
                     time_remaining = n_elem * wait_time - i * wait_time + n_elem//chunkyBoiCount * wait_time*1.5
                     time_remaining_minutes = int(time_remaining)//60
                     time_percent = round(time_remaining/old_time * 100)
+                    
                     if randomTime == 0:
                         self.minutesRemainingDisplay.setProperty("value", time_remaining_minutes)
                         self.progressBar.setProperty("value", time_percent)
+                        
                     print(f"{i}/{n_elem}")
+                    
                     if chunkyBoiCount == ln:
                         print("----------")
                         keyboard.press_and_release("enter")
                         ln = 0
                         sleep(wait_time*1.5)
+                        
                     sleep(wait_time)
+                    
                     if i == n_elem:
-                        self.minutesRemainingLabel.setText("Minutes remaining (approximate)")
+                        self.minutesRemainingLabel.setText("Approximate minutes remaining")
+                        
         except:
             self.startButton.setText("Please select a script file!")
             sleep(1.5)
             self.startButton.setText("Start!")
-            
-    def main_prog_rand(self):
-        self.startSemiButton.setText("Starting in 5 seconds")
+        self.startButton.setText("Start!")
+        self.progressBar.setProperty("value", 0)
+        
+class uniqueSpammer(QDialog):
+    def __init__(self):
+        super(uniqueSpammer, self).__init__()
+        loadUi("resources/unique.ui", self)
+        self.uniqueBack.clicked.connect(self.gotwelcome)
+        self.startButton.clicked.connect(self.runThread)
+        
+        self.animation = QPropertyAnimation(self.uniqueLabel, b"pos")
+        self.animation.setDuration(2000)
+        self.animation.setEndValue(QPoint(0, 30))
+        self.animation.setEasingCurve(QEasingCurve.OutCubic)
+        self.animation.start()
+        
+    def gotwelcome(self):
+        welcome = welcomeScreen()
+        widget.addWidget(welcome)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+        widget.setWindowTitle("{solar} - Welcome")
+      
+    def runThread(self):
+        threading.Thread(target=self.run).start()
+      
+    def run(self):
+        
+        
         content = self.startingString.text()
-        times = self.spamAmount.value()
+        times = self.spamTimes.value()
         waitTime = self.timeBetween.value()
         randomTime = self.randomizeTime.checkState()
+        
         STR_GEN = string.ascii_uppercase + string.digits + string.punctuation
+        
         d = 0
-        sleep(5)
-        self.startButton.setText("Start!")
+        
+        timeLeftPre = times * waitTime - d * waitTime
+        
+        self.startButton.setText("Starting in 5 seconds.....")
+        sleep(1)
+        self.startButton.setText("Starting in 4 seconds....")
+        sleep(1)
+        self.startButton.setText("Starting in 3 seconds...")
+        sleep(1)
+        self.startButton.setText("Starting in 2 seconds..")
+        sleep(1)
+        self.startButton.setText("Starting in 1 second.")
+        sleep(1)
+        
+        self.startButton.setText("Running!")
+        
         for i in range(times):
             keyboard.write(content + "  {" + ''.join(random.choice(STR_GEN) for _ in range(self.suffixLength.value())) + "}")
             sleep(0.001)
@@ -107,306 +230,57 @@ class Ui_Spammer(object):
             d += 1
             print(f"{d}/{times}")
             timeLeft = times * waitTime - d * waitTime
-            self.minutesLeft.setProperty("value", round(timeLeft/60))
+            self.minutesRemainingDisplay.setProperty("value", round(timeLeft/60))
+            self.progressBar.setProperty("value", round(timeLeft/timeLeftPre*100))
             
-    def autoClicker(self):
-        slightlyRandomize = self.randomCps.checkState()
-        sleep(5)
-        while True:
-            mouse.click(button=currentButton)
-            if slightlyRandomize >= 1:
-                sleeptime = int(self.cpsBox.value())/109.85+random.uniform(0, 0.2)
-            else:
-                sleeptime = int(self.cpsBox.value())/109.85
-            print(sleeptime)
-            sleep(sleeptime)
-            global stopAc
-            if stopAc == 1:
-                stopAc = 0
-                exit()
-            
-    def setRMB(self):
-        self.rightClick.setEnabled(False)
-        self.leftClick.setEnabled(True)
-        currentButton = "right"
+        self.startButton.setText("Start!")
         
-    def setLMB(self):
-        self.rightClick.setEnabled(True)
-        self.leftClick.setEnabled(False)
-        currentButton = "left"
-            
-    def start_thread(self):
-        threading.Thread(target=self.main_prog).start()
-    
-    def start_rand_thread(self):
-        threading.Thread(target=self.main_prog_rand).start()
+class aboutUs(QDialog):
+    def __init__(self):
+        super(aboutUs, self).__init__()
+        loadUi("resources/about.ui", self)
+        self.abtBack.clicked.connect(self.gootowelcome)
         
-    def start_ac(self):
-        threading.Thread(target=self.autoClicker).start()
-    
-    def stop_ac(self):
-        global stopAc
-        stopAc = 1
+        self.animation = QPropertyAnimation(self.aboutLabel, b"pos")
+        self.animation.setDuration(1400)
+        self.animation.setEndValue(QPoint(-10, 30))
+        self.animation.setEasingCurve(QEasingCurve.OutCubic)
         
-    
-    def setupUi(self, Spammer):
-        Spammer.setObjectName("Spammer")
-        Spammer.resize(480, 200)
-        Spammer.setMinimumSize(QtCore.QSize(480, 200))
-        Spammer.setMaximumSize(QtCore.QSize(480, 200))
-        Spammer.setMouseTracking(False)
+        self.solaranim = QPropertyAnimation(self.solarLabel, b"pos")
+        self.solaranim.setDuration(1400)
+        self.solaranim.setEndValue(QPoint(20, 30))
+        self.solaranim.setEasingCurve(QEasingCurve.OutCubic)
         
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("assets/icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Spammer.setWindowIcon(icon)
+        self.body = QPropertyAnimation(self.about, b"pos")
+        self.body.setDuration(2500)
+        self.body.setEndValue(QPoint(200, 150))
+        self.body.setEasingCurve(QEasingCurve.OutCirc)
         
-        self.centralwidget = QtWidgets.QWidget(Spammer)
-        self.centralwidget.setObjectName("centralwidget")
+        self.animgroup = QSequentialAnimationGroup()
+        self.animgroup.addAnimation(self.animation)
+        self.animgroup.addAnimation(self.solaranim)
+        self.animgroup.addAnimation(self.body)
+        self.animgroup.start()
         
-# ----------------------------FIRST TAB-------------------------------- #
-        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 481, 201))
-        
-        self.motdTab = QtWidgets.QWidget()
-        self.motdTab.setObjectName("MOTD Tab")
-        self.tabWidget.addTab(self.motdTab, "")
+    def gootowelcome(self):
+        welcome = welcomeScreen()
+        widget.addWidget(welcome)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+        widget.setWindowTitle("{solar} - Welcome")
 
-        
-        self.motd = QtWidgets.QLabel('Center', self.motdTab)
-        self.motd.move(0, 0)
-        self.motd.setStyleSheet("font-size: 10pt")
-        self.motd.setObjectName(u"motd")
-        
-# ----------------------------SECOND TAB-------------------------------- #
-        # Tabs
-        
-        self.fsTab = QtWidgets.QWidget()
-        self.fsTab.setObjectName(u"Script Spammer")
-        self.tabWidget.addTab(self.fsTab, "")
-        # Progress bar
-        self.progressBar = QtWidgets.QProgressBar(self.fsTab)
-        self.progressBar.setGeometry(QtCore.QRect(10, 39+24, 421, 23))
-        self.progressBar.setProperty("value", 0)
-        self.progressBar.setObjectName("progressBar")
-        
-        self.progressBarLabel = QtWidgets.QLabel(self.fsTab)
-        self.progressBarLabel.setGeometry(423, 39+24, 50, 23)
-        self.progressBarLabel.setObjectName(u"progressBarLabel")
-        
-        # Randomize time
-        self.randomizeTimeScripted = QtWidgets.QCheckBox(self.fsTab)
-        self.randomizeTimeScripted.setGeometry(10, 10, 101, 21)
-        self.randomizeTimeScripted.setObjectName("randomizeTimeScripted")
-        
-        # Minutes remaining display
-        self.minutesRemainingDisplay = QtWidgets.QLCDNumber(self.fsTab)
-        self.minutesRemainingDisplay.setGeometry(QtCore.QRect(10, 34, 64, 23))
-        self.minutesRemainingDisplay.setObjectName("minutesRemainingDisplay")
-        # Label
-        self.minutesRemainingLabel = QtWidgets.QLabel(self.fsTab)
-        self.minutesRemainingLabel.setGeometry(QtCore.QRect(80, 35, 160, 20))
-        self.minutesRemainingLabel.setObjectName("minutesRemainingLabel")
-
-        # Time between messages county thing
-        self.timeBetweenMessages = QtWidgets.QDoubleSpinBox(self.fsTab)
-        self.timeBetweenMessages.setGeometry(QtCore.QRect(410, 10, 62, 22))
-        self.timeBetweenMessages.setObjectName("timeBetweenMessages")
-        self.timeBetweenMessages.setProperty("singleStep", 0.1)
-        self.timeBetweenMessages.setProperty("value", 0.4)
-        self.timeBetweenMessages.setProperty("decimals", 1)
-        # Label
-        self.timeBetweenMessagesLabel = QtWidgets.QLabel(self.fsTab)
-        self.timeBetweenMessagesLabel.setGeometry(QtCore.QRect(290, 10, 131, 20))
-        self.timeBetweenMessagesLabel.setObjectName("timeBetweenMessagesLabel")
-        # Chunky boi count
-        self.chunkCount = QtWidgets.QSpinBox(self.fsTab)
-        self.chunkCount.setGeometry(QtCore.QRect(410, 35, 62, 22))
-        self.chunkCount.setObjectName("chunkCount")
-        self.chunkCount.setProperty("sigleStep", 1)
-        self.chunkCount.setProperty("value", 5)
-        self.chunkCount.setProperty("minimum", 3)
-        self.chunkCount.setProperty("maximum", 15)
-        self.chunkCount.setProperty("decimals", 0)
-        # Label
-        self.chunkCountLabel = QtWidgets.QLabel(self.fsTab)
-        self.chunkCountLabel.setGeometry(QtCore.QRect(316, 35, 131, 20))
-        self.timeBetweenMessagesLabel.setObjectName("chunkCountLabel")
-        # Start button
-        self.startButton = QtWidgets.QPushButton(self.fsTab)
-        self.startButton.setGeometry(QtCore.QRect(10, 69+24, 461, 41))
-        self.startButton.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        self.startButton.setObjectName("startButton")
-        self.startButton.clicked.connect(self.start_thread)
-        # File Button
-        self.fileButton = QtWidgets.QPushButton(self.fsTab)
-        self.fileButton.setGeometry(QtCore.QRect(10, 110+24, 461, 41))
-        self.fileButton.setObjectName("fileButton")
-        self.fileButton.clicked.connect(self.getFile)
-# -----------------------------THIRD TAB------------------------------------ #
-        self.srTab = QtWidgets.QWidget()
-        self.srTab.setObjectName(u"Unique spammer")
-        self.tabWidget.addTab(self.srTab, "")
-        
-        # Input for the starter string to build off of
-        self.startingString = QtWidgets.QLineEdit(self.srTab)
-        self.startingString.setGeometry(QtCore.QRect(250, 20, 221, 20))
-        self.startingString.setObjectName("startingString")
-        
-        # Label for above feature
-        self.startingStringLabel = QtWidgets.QLabel(self.srTab)
-        self.startingStringLabel.setGeometry(QtCore.QRect(175, 20, 71, 16))
-        self.startingStringLabel.setObjectName("startingStringLabel")
-        
-        # How many times to spam
-        self.spamAmount = QtWidgets.QSpinBox(self.srTab)
-        self.spamAmount.setGeometry(QtCore.QRect(371, 50, 101, 22))
-        self.spamAmount.setMaximum(7000)
-        self.spamAmount.setSingleStep(10)
-        self.spamAmount.setProperty("value", 100)
-        self.spamAmount.setObjectName("spamAmount")
-        
-        # Label for above feature
-        self.spamTimesLabel = QtWidgets.QLabel(self.srTab)
-        self.spamTimesLabel.setGeometry(QtCore.QRect(300, 50, 71, 20))
-        self.spamTimesLabel.setObjectName("spamTimesLabel")
-        
-        # Minutes left display
-        self.minutesLeft = QtWidgets.QLCDNumber(self.srTab)
-        self.minutesLeft.setGeometry(QtCore.QRect(0, 80, 64, 23))
-        self.minutesLeft.setObjectName("lcdNumber")
-        
-        # Label for above feature
-        self.minutesLeftLabel = QtWidgets.QLabel(self.srTab)
-        self.minutesLeftLabel.setGeometry(QtCore.QRect(70, 81, 61, 20))
-        self.minutesLeftLabel.setObjectName("label")
-        
-        # Select the time between messages, aka spam rate
-        self.timeBetween = QtWidgets.QDoubleSpinBox(self.srTab)
-        self.timeBetween.setObjectName(u"timeBetweenMessages")
-        self.timeBetween.setGeometry(QtCore.QRect(410, 80, 62, 22))
-        self.timeBetween.setProperty("singleStep", 0.1)
-        self.timeBetween.setProperty("decimals", 1)
-        self.timeBetween.setProperty("minimum", 0.1)
-        self.timeBetween.setProperty("value", 1.0)
-        
-        # Label for above feature
-        self.TBMLabel = QtWidgets.QLabel(self.srTab)
-        self.TBMLabel.setObjectName(u"TBMLabel")
-        self.TBMLabel.setGeometry(QtCore.QRect(290, 80, 121, 20))
-        
-        # Changes the length of the randomized suffix
-        self.suffixLength = QtWidgets.QSpinBox(self.srTab)
-        self.suffixLength.setObjectName(u"suffixLength")
-        self.suffixLength.setGeometry(QtCore.QRect(0, 50, 42, 22))
-        self.suffixLength.setMinimum(4)
-        self.suffixLength.setMaximum(100)
-        self.suffixLength.setValue(16)
-        
-        # Label for above feature
-        self.suffixLengthLabel = QtWidgets.QLabel(self.srTab)
-        self.suffixLengthLabel.setObjectName(u"suffixLengthLabel")
-        self.suffixLengthLabel.setGeometry(QtCore.QRect(50, 50, 81, 20))
-        
-        # Thing to slightly modify the time between each message
-        self.randomizeTime = QtWidgets.QCheckBox(self.srTab)
-        self.randomizeTime.setGeometry(QtCore.QRect(0, 20, 101, 21))
-        self.randomizeTime.setObjectName(u"randomizeTime")
-        
-        # Start button
-        self.startSemiButton = QtWidgets.QPushButton(self.srTab)
-        self.startSemiButton.setGeometry(QtCore.QRect(0, 106, 477, 70))
-        self.startSemiButton.setObjectName("pushButton")
-        self.startSemiButton.clicked.connect(self.start_rand_thread)
-        
-# --------------------------------------------------------------------------- #
-        self.acTab = QtWidgets.QWidget()
-        self.acTab.setObjectName(u"Autoclicker")
-        self.tabWidget.addTab(self.acTab, "")
-
-        self.cpsBox = QtWidgets.QSpinBox(self.acTab)
-        self.cpsBox.setObjectName("cpsBox")
-        self.cpsBox.setGeometry(QtCore.QRect(10, 10, 42, 22))
-        self.cpsBox.setMinimum(1)
-        self.cpsBox.setMaximum(50)
-        self.cpsBox.setValue(10)
-        
-        self.cpsBoxLabel = QtWidgets.QLabel(self.acTab)
-        self.cpsBoxLabel.setObjectName("cpsBoxLabel")
-        self.cpsBoxLabel.setGeometry(QtCore.QRect(60, 10, 47, 21))
-        
-        self.randomCps = QtWidgets.QCheckBox(self.acTab)
-        self.randomCps.setObjectName("randomCps")
-        self.randomCps.setGeometry(QtCore.QRect(10, 40, 70, 17))
-        
-        self.rightClick = QtWidgets.QPushButton(self.acTab)
-        self.rightClick.setObjectName("rightClick")
-        self.rightClick.setGeometry(QtCore.QRect(100, 10, 75, 23))
-        self.rightClick.clicked.connect(self.setRMB)
-        
-        self.leftClick = QtWidgets.QPushButton(self.acTab)
-        self.leftClick.setObjectName("leftClick")
-        self.leftClick.setGeometry(QtCore.QRect(180, 10, 75, 23))
-        self.leftClick.clicked.connect(self.setLMB)
-        
-        self.startAutoClicker = QtWidgets.QPushButton(self.acTab)
-        self.startAutoClicker.setObjectName("startAutoClicker")
-        self.startAutoClicker.setGeometry(QtCore.QRect(100, 40, 75, 23))
-        self.startAutoClicker.clicked.connect(self.start_ac)
-        
-        self.stopAutoClicker = QtWidgets.QPushButton(self.acTab)
-        self.stopAutoClicker.setObjectName("stopAutoClicker")
-        self.stopAutoClicker.setGeometry(QtCore.QRect(180, 40, 75, 23))
-        self.stopAutoClicker.clicked.connect(self.stop_ac)
-        
-# --------------------------------------------------------------------------- #
-
-        Spammer.setCentralWidget(self.centralwidget)
-        self.retranslateUi(Spammer)
-        self.tabWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(Spammer)
-    def retranslateUi(self, Spammer):
-        _translate = QtCore.QCoreApplication.translate
-        Spammer.setWindowTitle(_translate("Spammer", "Solar Spammer"))
-        
-        self.motd.setText(_translate("Spammer", requests.get("https://raw.githubusercontent.com/SbCoiner/SolarSpammerMOTD/main/MOTD").text))
-        
-        self.startButton.setToolTip(_translate("Spammer", "Spamming will start after a 5 second delay"))
-        self.progressBar.setToolTip(_translate("Spammer", "Shows progress of spammer, kinda inverted but whatever"))
-        self.startButton.setText(_translate("Spammer", "Start!"))
-        self.timeBetweenMessagesLabel.setText(_translate("Spammer", "Time between messages"))
-        self.minutesRemainingLabel.setText(_translate("Spammer", "Minutes remaining (approximate)"))
-        self.fileButton.setText(_translate("Spammer", "Select script file"))
-        self.chunkCountLabel.setText(_translate("Spammer", "Message block size"))
-        self.progressBarLabel.setText(_translate("Spammer", "Remaining"))
-        self.randomizeTimeScripted.setText(QtCore.QCoreApplication.translate("Spammer", u"Randomize time", None))
-        
-        self.startSemiButton.setText(QtCore.QCoreApplication.translate("Spammer", u"Start!", None))
-        self.minutesLeftLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Minutes left", None))
-        self.spamTimesLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Times to spam", None))
-        self.startingStringLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Starting String", None))
-        self.TBMLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Time between messages" ))
-        self.suffixLengthLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"Length of suffix" ))
-        self.randomizeTime.setText(QtCore.QCoreApplication.translate("Spammer", u"Randomize time", None))
-        
-        self.cpsBoxLabel.setText(QtCore.QCoreApplication.translate("Spammer", u"CPS", None))
-        self.randomCps.setText(QtCore.QCoreApplication.translate("Spammer", u"Vary CPS", None))
-        self.rightClick.setText(QtCore.QCoreApplication.translate("Spammer", u"RMB", None))
-        self.leftClick.setText(QtCore.QCoreApplication.translate("Spammer", u"LMB", None))
-        self.setLMB()
-        self.startAutoClicker.setText(QtCore.QCoreApplication.translate("Spammer", u"Start", None))
-        self.stopAutoClicker.setText(QtCore.QCoreApplication.translate("Spammer", u"Stop", None))
-        
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.motdTab), QtCore.QCoreApplication.translate("Spammer", u"MOTD", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.fsTab), QtCore.QCoreApplication.translate("Spammer", u"From Script", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.srTab), QtCore.QCoreApplication.translate("Spammer", u"Semi-Randomized", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.acTab), QtCore.QCoreApplication.translate("Spammer", u"Autoclicker", None))
-        
-        
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    Spammer = QtWidgets.QMainWindow()
-    ui = Ui_Spammer()
-    ui.setupUi(Spammer)
-    Spammer.show()
-    sys.exit(app.exec_())
+     
+import sys
+from ctypes import windll
+myappid = 'trident.solar.solar.1.0.0'
+windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+app = QApplication(sys.argv)
+welcome = welcomeScreen()
+widget = QStackedWidget()
+widget.addWidget(welcome)
+widget.setFixedWidth(1151)
+widget.setFixedHeight(650)
+widget.setWindowTitle("{solar} - Welcome")
+widget.setWindowIcon(QIcon("assets/icon.png"))
+widget.show()
+try: sys.exit(app.exec_())
+except: pass
