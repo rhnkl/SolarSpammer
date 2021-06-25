@@ -137,7 +137,7 @@ background-color: rgb(255, 70, 73);</string>
      <string>Length of suffix</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="startingString">
     <property name="geometry">
      <rect>
       <x>100</x>

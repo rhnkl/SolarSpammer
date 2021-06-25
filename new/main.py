@@ -1,6 +1,8 @@
 from time import sleep
 import keyboard
 import random
+import string
+import threading
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.uic import loadUi
@@ -55,12 +57,12 @@ class scripted(QDialog):
         loadUi("resources/scriptBased.ui", self)
         self.backButton.clicked.connect(self.gotowelcome)
         self.scriptFile.clicked.connect(self.getFile)
-        self.startButton.clicked.connect(self.run)
+        self.startButton.clicked.connect(self.runThread)
         
         self.timeBetweenMessages.setProperty("singleStep", 0.1)
         self.timeBetweenMessages.setProperty("value", 0.4)
         self.timeBetweenMessages.setProperty("decimals", 1)
-        
+            
         self.animation = QPropertyAnimation(self.scriptbasedLabel, b"pos")
         self.animation.setDuration(2000)
         self.animation.setEndValue(QPoint(0, 30))
@@ -83,7 +85,11 @@ class scripted(QDialog):
                 global filePath
                 filePath = filePathPre
                 print(filePath)
+                self.scriptFile.setText("Selected")
         except: return
+        
+    def runThread(self):
+        threading.Thread(target=self.run).start()
         
     def run(self):
         try:
@@ -106,10 +112,21 @@ class scripted(QDialog):
                 time_remaining = n_elem * wait_time + n_elem//chunkyBoiCount * wait_time * 1.5
                 old_time = time_remaining
                 
-                sleep(5)
+                
+                self.startButton.setText("Starting in 5 seconds.....")
+                sleep(1)
+                self.startButton.setText("Starting in 4 seconds....")
+                sleep(1)
+                self.startButton.setText("Starting in 3 seconds...")
+                sleep(1)
+                self.startButton.setText("Starting in 2 seconds..")
+                sleep(1)
+                self.startButton.setText("Starting in 1 second.")
+                sleep(1)
+                
                 i = 0
                 ln = 0
-                self.startButton.setText("Start!")
+                self.startButton.setText("Running!")
                 
                 for split_up_script in split_up_script:
                     if randomTime >= 1:
@@ -144,16 +161,20 @@ class scripted(QDialog):
                     
                     if i == n_elem:
                         self.minutesRemainingLabel.setText("Approximate minutes remaining")
+                        
         except:
             self.startButton.setText("Please select a script file!")
             sleep(1.5)
             self.startButton.setText("Start!")
+        self.startButton.setText("Start!")
+        self.progressBar.setProperty("value", 0)
         
 class uniqueSpammer(QDialog):
     def __init__(self):
         super(uniqueSpammer, self).__init__()
         loadUi("resources/unique.ui", self)
         self.uniqueBack.clicked.connect(self.gotwelcome)
+        self.startButton.clicked.connect(self.runThread)
         
         self.animation = QPropertyAnimation(self.uniqueLabel, b"pos")
         self.animation.setDuration(2000)
@@ -166,6 +187,53 @@ class uniqueSpammer(QDialog):
         widget.addWidget(welcome)
         widget.setCurrentIndex(widget.currentIndex()+1)
         widget.setWindowTitle("{solar} - Welcome")
+      
+    def runThread(self):
+        threading.Thread(target=self.run).start()
+      
+    def run(self):
+        
+        
+        content = self.startingString.text()
+        times = self.spamTimes.value()
+        waitTime = self.timeBetween.value()
+        randomTime = self.randomizeTime.checkState()
+        
+        STR_GEN = string.ascii_uppercase + string.digits + string.punctuation
+        
+        d = 0
+        
+        timeLeftPre = times * waitTime - d * waitTime
+        
+        self.startButton.setText("Starting in 5 seconds.....")
+        sleep(1)
+        self.startButton.setText("Starting in 4 seconds....")
+        sleep(1)
+        self.startButton.setText("Starting in 3 seconds...")
+        sleep(1)
+        self.startButton.setText("Starting in 2 seconds..")
+        sleep(1)
+        self.startButton.setText("Starting in 1 second.")
+        sleep(1)
+        
+        self.startButton.setText("Running!")
+        
+        for i in range(times):
+            keyboard.write(content + "  {" + ''.join(random.choice(STR_GEN) for _ in range(self.suffixLength.value())) + "}")
+            sleep(0.001)
+            keyboard.press_and_release("enter")
+            if randomTime == 0:
+                sleep(waitTime)
+            else:
+                sleepyTime = round(random.uniform(0.5, 2), 2)
+                sleep(sleepyTime)
+            d += 1
+            print(f"{d}/{times}")
+            timeLeft = times * waitTime - d * waitTime
+            self.minutesRemainingDisplay.setProperty("value", round(timeLeft/60))
+            self.progressBar.setProperty("value", round(timeLeft/timeLeftPre*100))
+            
+        self.startButton.setText("Start!")
         
 class aboutUs(QDialog):
     def __init__(self):
