@@ -176,6 +176,19 @@ class uniqueSpammer(QDialog):
         self.uniqueBack.clicked.connect(self.gotwelcome)
         self.startButton.clicked.connect(self.runThread)
         
+        self.timeBetween.setProperty("singleStep", 0.1)
+        self.timeBetween.setProperty("decimals", 1)
+        self.timeBetween.setProperty("minimum", 0.1)
+        self.timeBetween.setProperty("value", 1.0)
+        
+        self.suffixLength.setMinimum(4)
+        self.suffixLength.setMaximum(100)
+        self.suffixLength.setValue(16)
+        
+        self.spamTimes.setMaximum(7000)
+        self.spamTimes.setSingleStep(10)
+        self.spamTimes.setProperty("value", 100)
+        
         self.animation = QPropertyAnimation(self.uniqueLabel, b"pos")
         self.animation.setDuration(2000)
         self.animation.setEndValue(QPoint(0, 30))

@@ -233,7 +233,7 @@ border-radius: 17px;</string>
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>300</y>
+      <y>310</y>
       <width>111</width>
       <height>51</height>
      </rect>
@@ -243,7 +243,7 @@ border-radius: 17px;</string>
     <property name="geometry">
      <rect>
       <x>750</x>
-      <y>310</y>
+      <y>320</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -285,7 +285,7 @@ background-color: rgb(56, 86, 255);</string>
     <property name="geometry">
      <rect>
       <x>660</x>
-      <y>370</y>
+      <y>380</y>
       <width>341</width>
       <height>41</height>
      </rect>
