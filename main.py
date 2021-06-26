@@ -10,6 +10,12 @@ from PyQt5.QtCore import QParallelAnimationGroup, QPropertyAnimation, QSequentia
 global hasLoaded
 hasLoaded = False
 
+def exitShortcut():
+    keyboard.wait("shift+esc")
+    os._exit(1)
+    
+threading.Thread(target=exitShortcut).start()
+
 class welcomeScreen(QDialog):
     def __init__(self):
         super(welcomeScreen, self).__init__()
