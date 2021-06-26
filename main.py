@@ -1,37 +1,55 @@
 from time import sleep
-import keyboard
-import random
-import string
-import threading
-from time import sleep
+from ctypes import windll
+import keyboard, random, string, threading, os, sys
 from PyQt5 import QtWidgets
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QDialog, QApplication, QGraphicsOpacityEffect, QStackedWidget
-from PyQt5.QtCore import QParallelAnimationGroup, QPropertyAnimation, QSequentialAnimationGroup, QPoint, QEasingCurve
+from PyQt5.QtCore import QParallelAnimationGroup, QPropertyAnimation, QSequentialAnimationGroup, QPoint, QEasingCurve, QUrl
+
+global hasLoaded
+hasLoaded = False
 
 class welcomeScreen(QDialog):
     def __init__(self):
         super(welcomeScreen, self).__init__()
         loadUi("resources/welcome.ui", self)
+        
+        self.uiScriptBasedSpammer.setProperty("enabled", False)
+        self.uiUniqueSpammer.setProperty("enabled", False)
+        self.aboutButton.setProperty("enabled", False)
+        if hasLoaded: self.loadingBar.move(0, -200)
+        
         self.uiScriptBasedSpammer.clicked.connect(self.gotoscript)
         self.uiUniqueSpammer.clicked.connect(self.gotounique)
         self.aboutButton.clicked.connect(self.gotoabout)
+        self.quit.clicked.connect(self.q)
+        self.docs.clicked.connect(self.openDocs)
         
         self.animation = QPropertyAnimation(self.welcomeLabel, b"pos")
-        self.animation.setDuration(1400)
+        self.animation.setDuration(900)
         self.animation.setEndValue(QPoint(50, 30))
         self.animation.setEasingCurve(QEasingCurve.OutCubic)
         
         self.solaranim = QPropertyAnimation(self.solarLabel, b"pos")
-        self.solaranim.setDuration(1400)
+        self.solaranim.setDuration(1500)
         self.solaranim.setEndValue(QPoint(50, 30))
         self.solaranim.setEasingCurve(QEasingCurve.OutCubic)
+        
+        if hasLoaded == False:
+            self.loadingAnim = QPropertyAnimation(self.loadingBar, b"value")
+            self.loadingAnim.setDuration(2000)
+            self.loadingAnim.setEndValue(100) # YES, THE LOADING BAR IS FAKE. SHUT UP.
+            curves = [QEasingCurve.InCubic, QEasingCurve.OutCubic, QEasingCurve.InOutQuart, QEasingCurve.OutInQuart, QEasingCurve.OutInQuint, QEasingCurve.Linear]
+            self.loadingAnim.setEasingCurve(random.choice(curves))
         
         self.animgroup = QParallelAnimationGroup()
         self.animgroup.addAnimation(self.animation)
         self.animgroup.addAnimation(self.solaranim)
+        if hasLoaded == False: self.animgroup.addAnimation(self.loadingAnim)
         self.animgroup.start()
+        
+        self.animgroup.finished.connect(self.fin)
         
     def gotoscript(self):
         scriptBasedScreen = scripted()
@@ -50,12 +68,34 @@ class welcomeScreen(QDialog):
         widget.addWidget(abt)
         widget.setCurrentIndex(widget.currentIndex()+1)
         widget.setWindowTitle("{solar} - About")
+        
+    def fin(self):
+        self.uiScriptBasedSpammer.setProperty("enabled", True)
+        self.uiUniqueSpammer.setProperty("enabled", True)
+        self.aboutButton.setProperty("enabled", True)
+        global hasLoaded
+        if hasLoaded == False:
+            self.leave = QPropertyAnimation(self.loadingBar, b"pos")
+            self.leave.setDuration(random.randrange(800, 1300))
+            self.leave.setEndValue(QPoint(400, 650))
+            self.leave.setEasingCurve(QEasingCurve.OutCubic)
+            self.leave.start()
+            hasLoaded = True
+            
+    def q(self):
+        os._exit(1)
+        
+    def openDocs(self):
+        QDesktopServices.openUrl(QUrl("https://github.com/Pixeloided/SolarSpammer/wiki"))
 
         # ngl thiss entire program is cursed af
 class scripted(QDialog):
     def __init__(self):
         super(scripted, self).__init__()
         loadUi("resources/scriptBased.ui", self)
+        
+        self.backButton.setProperty("enabled", False)
+        
         self.backButton.clicked.connect(self.gotowelcome)
         self.scriptFile.clicked.connect(self.getFile)
         self.startButton.clicked.connect(self.runThread)
@@ -65,10 +105,14 @@ class scripted(QDialog):
         self.timeBetweenMessages.setProperty("decimals", 1)
             
         self.animation = QPropertyAnimation(self.scriptbasedLabel, b"pos")
-        self.animation.setDuration(2000)
+        self.animation.setDuration(1500)
         self.animation.setEndValue(QPoint(0, 30))
         self.animation.setEasingCurve(QEasingCurve.OutCubic)
         self.animation.start()
+        self.animation.finished.connect(self.re)
+        
+    def re(self):
+        self.backButton.setProperty("enabled", True)
         
     def gotowelcome(self):
         welcome = welcomeScreen()
@@ -77,10 +121,10 @@ class scripted(QDialog):
         widget.setWindowTitle("{solar} - Welcome")
               
     def getFile(self):
-        self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName(self, "Choose script", '', 'TXT files (*.txt)')
+        self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName(self, "Choose script", '', '*.txt files')
         try:
             filePathPre = str(self.getFileDialog).split("'")[1]
-            if filePathPre == "": print("No file selected")
+            if filePathPre == "": self.scriptFile.setText("Select script file")
             else:
                 global filePath
                 filePath = filePathPre
@@ -167,12 +211,14 @@ class scripted(QDialog):
             sleep(1.5)
             self.startButton.setText("Start!")
         self.startButton.setText("Start!")
-        self.progressBar.setProperty("value", 0)
-        
+        self.progressBar.setProperty("value", 0)    
 class uniqueSpammer(QDialog):
     def __init__(self):
         super(uniqueSpammer, self).__init__()
         loadUi("resources/unique.ui", self)
+        
+        self.uniqueBack.setProperty("enabled", False)
+        
         self.uniqueBack.clicked.connect(self.gotwelcome)
         self.startButton.clicked.connect(self.runThread)
         
@@ -190,10 +236,14 @@ class uniqueSpammer(QDialog):
         self.spamTimes.setProperty("value", 100)
         
         self.animation = QPropertyAnimation(self.uniqueLabel, b"pos")
-        self.animation.setDuration(2000)
+        self.animation.setDuration(1500)
         self.animation.setEndValue(QPoint(0, 30))
         self.animation.setEasingCurve(QEasingCurve.OutCubic)
         self.animation.start()
+        self.animation.finished.connect(self.re)
+        
+    def re(self):
+        self.uniqueBack.setProperty("enabled", True)
         
     def gotwelcome(self):
         welcome = welcomeScreen()
@@ -246,13 +296,14 @@ class uniqueSpammer(QDialog):
             self.minutesRemainingDisplay.setProperty("value", round(timeLeft/60))
             self.progressBar.setProperty("value", round(timeLeft/timeLeftPre*100))
             
-        self.startButton.setText("Start!")
-        
+        self.startButton.setText("Start!")   
 class aboutUs(QDialog):
     def __init__(self):
         super(aboutUs, self).__init__()
         loadUi("resources/about.ui", self)
         self.abtBack.clicked.connect(self.gootowelcome)
+        
+        self.abtBack.setProperty("enabled", False)
         
         self.animation = QPropertyAnimation(self.aboutLabel, b"pos")
         self.animation.setDuration(1400)
@@ -274,16 +325,17 @@ class aboutUs(QDialog):
         self.animgroup.addAnimation(self.solaranim)
         self.animgroup.addAnimation(self.body)
         self.animgroup.start()
+        self.animgroup.finished.connect(self.re)
         
+    def re(self):
+        self.abtBack.setProperty("enabled", True)    
+    
     def gootowelcome(self):
         welcome = welcomeScreen()
         widget.addWidget(welcome)
         widget.setCurrentIndex(widget.currentIndex()+1)
         widget.setWindowTitle("{solar} - Welcome")
 
-     
-import sys
-from ctypes import windll
 myappid = 'trident.solar.solar.1.0.0'
 windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 app = QApplication(sys.argv)

@@ -28,8 +28,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QWidget#background{
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.0397727 rgba(183, 66, 0, 255), stop:1 rgba(255, 255, 255, 255));}</string>
+    <string notr="true">QWidget#background{background-color: rgb(54, 57, 63);}</string>
    </property>
    <widget class="QLabel" name="scriptbasedLabel">
     <property name="geometry">
@@ -200,7 +199,7 @@ background-color: rgb(245, 245, 245);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius:30px;
-background-color: rgb(56, 86, 255);</string>
+background-color: rgb(87, 242, 135);</string>
     </property>
     <property name="text">
      <string>Start!</string>
@@ -247,7 +246,7 @@ background-color: rgb(56, 86, 255);</string>
     <property name="styleSheet">
      <string notr="true">QProgressBar {
 	color: #FFF;
-	background-color: rgb(114, 147, 255);
+	background-color: rgb(88, 101, 242);
 	border-style: none;
 	border-radius: 15px;
 	text-align: center;
@@ -255,7 +254,7 @@ background-color: rgb(56, 86, 255);</string>
 }
 QProgressBar::chunk{
 	margin: 5px;
-	background-color: rgb(0, 255, 127);
+	background-color: rgb(87, 242, 135);
 	border-style: none;
 	border-radius: 15px
 }</string>
@@ -284,7 +283,7 @@ QProgressBar::chunk{
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius:20px;
-background-color: rgb(255, 70, 73);</string>
+background-color: rgb(237, 66, 69);</string>
     </property>
     <property name="text">
      <string>Back</string>
