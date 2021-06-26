@@ -1,6 +1,6 @@
+import keyboard, random, string, threading, os, sys
 from time import sleep
 from ctypes import windll
-import keyboard, random, string, threading, os, sys
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.uic import loadUi
@@ -341,6 +341,7 @@ class aboutUs(QDialog):
         widget.addWidget(welcome)
         widget.setCurrentIndex(widget.currentIndex()+1)
         widget.setWindowTitle("{solar} - Welcome")
+        
 
 myappid = 'trident.solar.solar.1.0.0'
 windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
