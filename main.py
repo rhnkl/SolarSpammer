@@ -3,11 +3,12 @@ import keyboard
 import random
 import string
 import threading
+from time import sleep
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QDialog, QApplication, QGraphicsOpacityEffect, QStackedWidget
-from PyQt5.QtCore import QPropertyAnimation, QSequentialAnimationGroup, QPoint, QEasingCurve
+from PyQt5.QtCore import QParallelAnimationGroup, QPropertyAnimation, QSequentialAnimationGroup, QPoint, QEasingCurve
 
 class welcomeScreen(QDialog):
     def __init__(self):
@@ -27,7 +28,7 @@ class welcomeScreen(QDialog):
         self.solaranim.setEndValue(QPoint(50, 30))
         self.solaranim.setEasingCurve(QEasingCurve.OutCubic)
         
-        self.animgroup = QSequentialAnimationGroup()
+        self.animgroup = QParallelAnimationGroup()
         self.animgroup.addAnimation(self.animation)
         self.animgroup.addAnimation(self.solaranim)
         self.animgroup.start()
@@ -50,7 +51,7 @@ class welcomeScreen(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
         widget.setWindowTitle("{solar} - About")
 
-        
+        # ngl thiss entire program is cursed af
 class scripted(QDialog):
     def __init__(self):
         super(scripted, self).__init__()
@@ -76,11 +77,10 @@ class scripted(QDialog):
         widget.setWindowTitle("{solar} - Welcome")
               
     def getFile(self):
-        self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName()
+        self.getFileDialog = QtWidgets.QFileDialog.getOpenFileName(self, "Choose script", '', 'TXT files (*.txt)')
         try:
             filePathPre = str(self.getFileDialog).split("'")[1]
-            if filePathPre == "":
-                print("No file selected")
+            if filePathPre == "": print("No file selected")
             else:
                 global filePath
                 filePath = filePathPre
@@ -269,7 +269,7 @@ class aboutUs(QDialog):
         self.body.setEndValue(QPoint(200, 150))
         self.body.setEasingCurve(QEasingCurve.OutCirc)
         
-        self.animgroup = QSequentialAnimationGroup()
+        self.animgroup = QParallelAnimationGroup()
         self.animgroup.addAnimation(self.animation)
         self.animgroup.addAnimation(self.solaranim)
         self.animgroup.addAnimation(self.body)
