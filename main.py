@@ -355,4 +355,4 @@ widget.setWindowTitle("{solar} - Welcome")
 widget.setWindowIcon(QIcon("assets/icon.png"))
 widget.show()
 try: sys.exit(app.exec_())
-except: pass
+except: os._exit(1)
