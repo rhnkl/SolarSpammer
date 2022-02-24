@@ -85,17 +85,17 @@ It's in the name. It just is the amount of times the program will spam the messa
 
 This one is the same as the last time between messages in terms of functionality, but this one has to be set higher (I reccomend either 0.9 or 1 for discord) in order to prevent rate limiting, just because of the fact that this one doesn't "block" the lines together.
 
-### Lenth of suffix
+### Length of suffix
 
 This is the length of the randomized characters after the starting string. For example, in the case we used earlier
 
 > Lol get spammed {m!L7KtL$iUjXM&Lt&nvB}
 
-m!L7KtL$iUjXM&Lt&nvB would be the suffix. The length of this one happens to be 20.
+"m!L7KtL$iUjXM&Lt&nvB" would be the suffix. The length of this one happens to be 20.
 
 ### Other features of this tab
 
-Nothing much, pretty much just the "minutes left" thing.
+Nothing much, just the "minutes left" thing.
 
 ### Randomize time
 
@@ -109,7 +109,7 @@ This option will enable time randomization. What it does is every time a message
 
 - Q: Why does the UI look so ugly?
 
-- A: We plan on making it look better in the near future
+- A: We plan on making it look better in the near future.
 
 ## Contributing Info
 
